@@ -21,6 +21,7 @@ from azure.core.exceptions import ResourceNotFoundError
 from azure.ai.ml.entities import Job, Component, AzureBlobDatastore
 from azure.ai.ml.entities._assets import Model, Data, Dataset
 from azure.ai.ml.entities._datastore.credentials import NoneCredentials
+from devtools_testutils import test_proxy
 
 
 E2E_TEST_LOGGING_ENABLED = "E2E_TEST_LOGGING_ENABLED"
@@ -30,6 +31,10 @@ test_folder = Path(os.path.abspath(__file__)).parent.absolute()
 def pytest_addoption(parser):
     parser.addoption("--location", action="store", default="eastus2euap")
 
+
+@pytest.fixture(autouse=True)
+def start_proxy(test_proxy):
+    return
 
 @pytest.fixture
 def location(request):
