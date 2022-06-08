@@ -2,6 +2,7 @@ import functools
 from operator import sub
 import time
 from typing import Any, Callable
+from uuid import uuid4
 from azure.ai.ml._operations.job_ops_helper import _wait_before_polling
 from azure.ai.ml._azure_environments import ENDPOINT_URLS, _get_cloud_details, resource_to_scopes
 from azure.ai.ml.entities._assets._artifacts.data import Data
@@ -42,8 +43,11 @@ MlPreparer = functools.partial(
     ml_resource_group="00000"
 )
 
-print("yahoo")
-@patch.object(OperationOrchestrator, "_match", return_value=True)
+def create_random_name():
+    import random
+    return f"test_{str(random.randint(1, 1000000000000))}"
+
+@pytest.mark.usefixtures("mock_code_hash")
 class TestCommandJob(AzureRecordedTestCase):
     """def __init__(self, method_name: Any) -> None:
         super().__init__(
@@ -62,7 +66,8 @@ class TestCommandJob(AzureRecordedTestCase):
 
     def create_ml_client(self, subscription_id, resource_group_name):
         credential = self.get_credential(MLClient)
-        client = self.get_create_client_from_credential(MLClient,
+        client = self.create_client_from_credential(
+            MLClient,
             credential=credential,
             subscription_id=subscription_id,
             resource_group_name=resource_group_name,
@@ -72,11 +77,10 @@ class TestCommandJob(AzureRecordedTestCase):
 
     @MlPreparer()
     @recorded_by_proxy
-    @pytest.mark.usefixtures("mock_code_hash")
     def test_command_job(self, ml_subscription_id, ml_resource_group) -> None:
-        # TODO: need to create a workspace under a e2e-testing-only subscription and resource group
+
         client = self.create_ml_client(subscription_id=ml_subscription_id, resource_group_name=ml_resource_group)
-        job_name = self.create_random_name(prefix="job-", length=16)
+        job_name = create_random_name()
         print(f"Creating job {job_name}")
 
         try:
@@ -110,6 +114,343 @@ class TestCommandJob(AzureRecordedTestCase):
         assert command_job_2.environment == "AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"
         assert command_job_2.compute == "cpu-cluster"
         check_tid_in_url(client, command_job_2)
+
+    @MlPreparer()
+    @recorded_by_proxy
+    def test_command_job_with_dataset(self, ml_subscription_id, ml_resource_group) -> None:
+
+        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
+        job_name = create_random_name()
+        params_override = [{"name": job_name}]
+        job = Job.load(
+            path="./tests/test_configs/command_job/command_job_test_with_local_dataset.yml",
+            params_override=params_override,
+        )
+        command_job: CommandJob = client.jobs.create_or_update(job=job)
+
+        assert command_job.status in RunHistoryConstants.IN_PROGRESS_STATUSES
+        assert command_job.environment == "AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"
+        assert command_job.compute == "testCompute"
+        check_tid_in_url(client, command_job)
+
+        command_job_2 = client.jobs.get(job_name)
+        assert command_job.name == command_job_2.name
+        assert command_job.identity.identity_type == command_job_2.identity.identity_type
+        assert command_job_2.environment == "AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"
+        assert command_job_2.compute == "testCompute"
+        check_tid_in_url(client, command_job_2)
+
+    @MlPreparer()
+    @recorded_by_proxy
+    def test_command_job_with_dataset_short_uri(self, ml_subscription_id, ml_resource_group) -> None:
+
+        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
+        job_name = create_random_name()
+        params_override = [{"name": job_name}]
+        job = Job.load(
+            path="./tests/test_configs/command_job/command_job_test_with_dataset.yml",
+            params_override=params_override,
+        )
+        command_job: CommandJob = client.jobs.create_or_update(job=job)
+
+        assert command_job.status in RunHistoryConstants.IN_PROGRESS_STATUSES
+        assert command_job.environment == "AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"
+        assert command_job.compute == "testCompute"
+        check_tid_in_url(client, command_job)
+
+        command_job_2 = client.jobs.get(job_name)
+        assert command_job.name == command_job_2.name
+        assert command_job.identity.identity_type == command_job_2.identity.identity_type
+        assert command_job_2.environment == "AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"
+        assert command_job_2.compute == "testCompute"
+        check_tid_in_url(client, command_job_2)
+
+    @pytest.mark.skip()
+    @MlPreparer()
+    @recorded_by_proxy
+    def test_command_job_builder(self, data_with_2_versions, ml_subscription_id, ml_resource_group) -> None:
+
+        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
+
+        inputs = {
+            "uri": Input(
+                type=AssetTypes.URI_FILE, path="azureml://datastores/workspaceblobstore/paths/python/data.csv"
+            ),
+            "data_asset": Input(path=f"{data_with_2_versions}:1"),
+            "local_data": Input(path="./tests/test_configs/data/"),
+        }
+
+        node = command(
+            name=create_random_name(),
+            description="description",
+            environment="AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1",
+            inputs=inputs,
+            command="echo ${{inputs.uri}} ${{inputs.data_asset}} ${{inputs.local_data}}",
+            display_name="builder_command_job",
+            compute="testCompute",
+            experiment_name="mfe-test1-dataset",
+            identity=AmlToken(),
+            distribution=MpiDistribution(process_count_per_instance=2),
+        )
+
+        assert node.environment == "AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"
+        assert node.display_name == "builder_command_job"
+        assert node.compute == "testCompute"
+        assert node.experiment_name == "mfe-test1-dataset"
+        assert node.identity == AmlToken()
+
+        node.description = "new-description"
+        node.display_name = "new_builder_command_job"
+        assert node.description == "new-description"
+        assert node.display_name == "new_builder_command_job"
+        assert isinstance(node.distribution, MpiDistribution)
+        assert node.distribution.process_count_per_instance == 2
+
+        result = client.create_or_update(node)
+        assert result.description == "new-description"
+        assert result.environment == "AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"
+        assert result.display_name == "new_builder_command_job"
+        assert result.compute == "testCompute"
+        assert result.experiment_name == "mfe-test1-dataset"
+        assert result.identity == AmlToken()
+        assert isinstance(result.distribution, MpiDistribution)
+        assert result.distribution.process_count_per_instance == 2
+
+    @MlPreparer()
+    @recorded_by_proxy
+    def test_command_job_local(self, ml_subscription_id, ml_resource_group) -> None:
+
+        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
+        job_name = create_random_name()
+        try:
+            _ = client.jobs.get(job_name)
+            print(f"Found existing job {job_name}")
+        except Exception as ex:
+            print(f"Job {job_name} not found: {ex}")
+
+        params_override = [{"name": job_name}]
+        job = Job.load(
+            path="./tests/test_configs/command_job/local_job.yaml",
+            params_override=params_override,
+        )
+        command_job: CommandJob = client.jobs.create_or_update(job=job)
+        assert command_job.name == job_name
+        assert command_job.environment == "AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"
+        assert command_job.compute == "local"
+
+    @pytest.mark.skip("TODO: 1210641- Re-enable when we switch to runner-style tests")
+    @MlPreparer()
+    @recorded_by_proxy
+    def test_command_job_with_params(self, ml_subscription_id, ml_resource_group) -> None:
+
+        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
+        job_name = create_random_name()
+        params_override = [{"name": job_name}]
+        job: CommandJob = Job.load(
+            path="./tests/test_configs/command_job/simple_train_test.yml",
+            params_override=params_override,
+        )
+        job = client.jobs.create_or_update(job=job)
+        with pytest.raises(ValidationException):  # show that environment is not a ARM id
+            AMLVersionedArmId(job.environment)
+        assert job.compute == "testCompute"
+        client.jobs.stream(job_name)
+        assert client.jobs.get(job_name).parameters
+
+    @MlPreparer
+    @recorded_by_proxy
+    def test_command_job_with_modified_environment(self, ml_subscription_id, ml_resource_group) -> None:
+
+        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
+        job_name = create_random_name()
+        params_override = [{"name": job_name}]
+        job = Job.load(
+            path="./tests/test_configs/command_job/command_job_test.yml",
+            params_override=params_override,
+        )
+        job = client.jobs.create_or_update(job=job)
+
+        job.name = create_random_name()
+        job.environment = "AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"
+
+        job = client.jobs.create_or_update(job=job)
+        assert job.environment == "AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"
+        job = client.jobs.get(name=job.name)
+        assert job.environment == "AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"
+
+    @pytest.mark.skip("Investigate why cancel does not record some upload requests of code assets")
+    @MlPreparer()
+    @recorded_by_proxy
+    def test_command_job_cancel(self, ml_subscription_id, ml_resource_group) -> None:
+
+        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
+        job_name = create_random_name()
+        print(f"Creating job to validate the cancel job operation: {job_name}")
+        params_override = [{"name": job_name}]
+        job = Job.load(
+            path="./tests/test_configs/command_job/simple_train_test.yml",
+            params_override=params_override,
+        )
+        command_job_resource = client.jobs.create_or_update(job=job)
+        assert command_job_resource.name == job_name
+        client.jobs.cancel(job_name)
+        command_job_resource_2 = client.jobs.get(job_name)
+        assert command_job_resource_2.status in (JobStatus.CANCEL_REQUESTED, JobStatus.CANCELED)
+
+    @MlPreparer()
+    @recorded_by_proxy
+    def test_command_job_dependency_label_resolution(self, ml_subscription_id, ml_resource_group) -> None:
+        """Checks that dependencies of the form azureml:name@label are resolved to a version"""
+
+        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
+        environment_name = str(uuid4())[:15]
+        environment_versions = ["foo", "bar"]
+        dataset_name = str(uuid4())
+        dataset_versions = ["baz", "quux"]
+        data_name = str(uuid4())
+        data_versions = ["foobar", "foo"]
+        for version in environment_versions:
+            client.environments.create_or_update(
+                Environment.load(
+                    "./tests/test_configs/environment/environment_conda_inline.yml",
+                    params_override=[{"name": environment_name}, {"version": version}],
+                )
+            )
+        for version in dataset_versions:
+            client.datasets.create_or_update(
+                Dataset(name=dataset_name, version=version, local_path="./tests/test_configs/data/sample1.csv")
+            )
+        for version in data_versions:
+            client.data.create_or_update(
+                Data(name=data_name, version=version, path="tests/test_configs/data/sample1.csv")
+            )
+
+        job = Job.load(
+            path="./tests/test_configs/command_job/simple_train_test.yml",
+            params_override=[
+                {"name": job_name},
+                {"environment": f"azureml:{environment_name}@latest"},
+                {
+                    "inputs": {
+                        "testdataset": {"path": f"azureml:{dataset_name}@latest"},
+                        "testdata": {"path": f"azureml:{data_name}@latest"},
+                    }
+                },
+            ],
+        )
+        command_job_resource = client.jobs.create_or_update(job=job)
+        client.jobs.cancel(job_name)
+
+        # Check that environment resolves to latest version
+        assert command_job_resource.environment == f"{environment_name}:{environment_versions[-1]}"
+        # Check that dataset resolves to latest version
+        assert command_job_resource.inputs["testdataset"]["path"] == f"{dataset_name}:{dataset_versions[-1]}"
+        # Check that dataset resolves to latest version
+        assert command_job_resource.inputs["testdata"]["path"] == f"{data_name}:{data_versions[-1]}"
+
+    @pytest.mark.skip(reason="Task 1791832: Inefficient, causing testing pipeline to time out.")
+    @MlPreparer()
+    @recorded_by_proxy
+    def test_command_job_archive_restore(self, ml_subscription_id, ml_resource_group) -> None:
+
+        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
+        job_name = create_random_name()
+        print(f"Creating job {job_name}")
+
+        params_override = [{"name": job_name}]
+        job = Job.load(
+            path="./tests/test_configs/command_job/command_job_test.yml",
+            params_override=params_override,
+        )
+        command_job: CommandJob = client.jobs.create_or_update(job=job)
+        name = command_job.name
+
+        def get_job_list():
+            # Wait for list index to update before calling list command
+            sleep(30)
+            job_list = client.jobs.list(list_view_type=ListViewType.ACTIVE_ONLY)
+            return [j.name for j in job_list if j is not None]
+
+        assert name in get_job_list()
+        client.jobs.archive(name=name)
+        assert name not in get_job_list()
+        client.jobs.restore(name=name)
+        assert name in get_job_list()
+
+    @pytest.mark.skip()
+    @MlPreparer()
+    @recorded_by_proxy
+    def test_command_job_download(self, tmp_path: Path) -> None:
+        client: MLClient = client
+
+        def wait_until_done(job: Job) -> None:
+            poll_start_time = time.time()
+            while job.status not in RunHistoryConstants.TERMINAL_STATUSES:
+                time.sleep(_wait_before_polling(time.time() - poll_start_time))
+                job = client.jobs.get(job.name)
+
+        job = client.jobs.create_or_update(
+            Job.load(
+                path="./tests/test_configs/command_job/command_job_quick_with_output.yml",
+                params_override=[{"name": self.kwargs["jobName"]}],
+            )
+        )
+        wait_until_done(job)
+
+        client.jobs.download(name=job.name, download_path=tmp_path, all=True)
+
+        artifact_dir = tmp_path / "artifacts"
+        output_dir = tmp_path / "named-outputs" / "hello_output"
+        assert artifact_dir.exists()
+        assert next(artifact_dir.iterdir(), None), "No artifacts were downloaded"
+        assert output_dir.exists()
+        assert next(output_dir.iterdir(), None), "No artifacts were downloaded"
+
+    @pytest.mark.skip()
+    @MlPreparer()
+    @recorded_by_proxy
+    def test_command_job_local_run_download(self, tmp_path: Path) -> None:
+        client: MLClient = client
+
+        def wait_until_done(job: Job) -> None:
+            poll_start_time = time.time()
+            while job.status not in RunHistoryConstants.TERMINAL_STATUSES:
+                time.sleep(_wait_before_polling(time.time() - poll_start_time))
+                job = client.jobs.get(job.name)
+
+        job = client.jobs.create_or_update(
+            Job.load(
+                path="./tests/test_configs/command_job/command_job_quick_with_output.yml",
+                params_override=[{"name": self.kwargs["jobName"]}, {"compute": LOCAL_COMPUTE_TARGET}],
+            )
+        )
+
+        wait_until_done(job)
+
+        client.jobs.download(name=job.name, download_path=tmp_path, all=True)
+
+        artifact_dir = tmp_path / "artifacts"
+        output_dir = tmp_path / "named-outputs" / "hello_output"
+        assert artifact_dir.exists()
+        assert next(artifact_dir.iterdir(), None), "No artifacts were downloaded"
+        assert output_dir.exists()
+        assert next(output_dir.iterdir(), None), "No artifacts were downloaded"
+
+    @MlPreparer()
+    @recorded_by_proxy
+    def test_command_job_invalid_datastore(self, ml_subscription_id, ml_resource_group) -> None:
+
+        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
+        job_name = create_random_name()
+        invalid_datastore_name = "non-existent-ds"  # referenced in command_job_inputs_incorrect_datastore_test.yml
+        params_override = [{"name": job_name}]
+        job: CommandJob = Job.load(
+            path="./tests/test_configs/command_job/command_job_inputs_incorrect_datastore_test.yml",
+            params_override=params_override,
+        )
+        with pytest.raises(Exception) as e:
+            job = client.jobs.create_or_update(job=job)
+            assert f"The datastore {invalid_datastore_name} could not be found in this workspace" in e
 
 def check_tid_in_url(client: MLClient, job: Job) -> None:
     # test that TID is placed in the URL
