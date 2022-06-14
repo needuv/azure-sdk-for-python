@@ -26,7 +26,8 @@ from azure.ai.ml._operations.run_history_constants import RunHistoryConstants, J
 from azure.ai.ml._utils._arm_id_utils import AMLVersionedArmId
 from azure.ai.ml._ml_exceptions import ValidationException
 
-from devtools_testutils import EnvironmentVariableLoader, AzureRecordedTestCase, recorded_by_proxy
+from devtools_testutils import recorded_by_proxy
+from ml_test import MlRecordedTest, MlPreparer, create_random_name
 from time import sleep
 from pathlib import Path
 
@@ -36,51 +37,18 @@ from pathlib import Path
 TEST_PARAMS = {"a_param": "1", "another_param": "2"}
 
 
-MlPreparer = functools.partial(
-    EnvironmentVariableLoader,
-    "ml",
-    ml_subscription_id="00000000-0000-0000-0000-000000000",
-    ml_resource_group="00000"
-)
-
-def create_random_name():
-    import random
-    return f"test_{str(random.randint(1, 1000000000000))}"
-
 @pytest.mark.usefixtures("mock_code_hash")
-class TestCommandJob(AzureRecordedTestCase):
-    """def __init__(self, method_name: Any) -> None:
-        super().__init__(
-            method_name,
-        )
-        self.kwargs.update(
-            {
-                "jobName": self.create_random_name(prefix="job-", length=16),
-            }
-        )
-        self.kwargs.update(
-            {
-                "jobName2": self.create_random_name(prefix="job-", length=16),
-            }
-        )"""
-
-    def create_ml_client(self, subscription_id, resource_group_name):
-        credential = self.get_credential(MLClient)
-        client = self.create_client_from_credential(
-            MLClient,
-            credential=credential,
-            subscription_id=subscription_id,
-            resource_group_name=resource_group_name,
-            workspace_name="sdk_vnext_cli"
-        )
-        return client
+class TestCommandJob(MlRecordedTest):
 
     @MlPreparer()
     @recorded_by_proxy
-    def test_command_job(self, ml_subscription_id, ml_resource_group) -> None:
+    def test_command_job(self, randstr, **kwargs) -> None:
 
-        client = self.create_ml_client(subscription_id=ml_subscription_id, resource_group_name=ml_resource_group)
-        job_name = create_random_name()
+        subscription_id = kwargs.get("ml_subscription_id")
+        resource_group = kwargs.get("ml_resource_group")
+
+        client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
+        job_name = randstr()
         print(f"Creating job {job_name}")
 
         try:
@@ -117,10 +85,13 @@ class TestCommandJob(AzureRecordedTestCase):
 
     @MlPreparer()
     @recorded_by_proxy
-    def test_command_job_with_dataset(self, ml_subscription_id, ml_resource_group) -> None:
+    def test_command_job_with_dataset(self, randstr, **kwargs) -> None:
 
-        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
-        job_name = create_random_name()
+        subscription_id = kwargs.get("ml_subscription_id")
+        resource_group = kwargs.get("ml_resource_group")
+
+        client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
+        job_name = randstr()
         params_override = [{"name": job_name}]
         job = Job.load(
             path="./tests/test_configs/command_job/command_job_test_with_local_dataset.yml",
@@ -142,10 +113,13 @@ class TestCommandJob(AzureRecordedTestCase):
 
     @MlPreparer()
     @recorded_by_proxy
-    def test_command_job_with_dataset_short_uri(self, ml_subscription_id, ml_resource_group) -> None:
+    def test_command_job_with_dataset_short_uri(self, randstr, **kwargs) -> None:
 
-        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
-        job_name = create_random_name()
+        subscription_id = kwargs.get("ml_subscription_id")
+        resource_group = kwargs.get("ml_resource_group")
+
+        client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
+        job_name = randstr()
         params_override = [{"name": job_name}]
         job = Job.load(
             path="./tests/test_configs/command_job/command_job_test_with_dataset.yml",
@@ -168,9 +142,12 @@ class TestCommandJob(AzureRecordedTestCase):
     @pytest.mark.skip()
     @MlPreparer()
     @recorded_by_proxy
-    def test_command_job_builder(self, data_with_2_versions, ml_subscription_id, ml_resource_group) -> None:
+    def test_command_job_builder(self, data_with_2_versions, randstr, **kwargs) -> None:
 
-        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
+        subscription_id = kwargs.get("ml_subscription_id")
+        resource_group = kwargs.get("ml_resource_group")
+
+        client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
 
         inputs = {
             "uri": Input(
@@ -181,7 +158,7 @@ class TestCommandJob(AzureRecordedTestCase):
         }
 
         node = command(
-            name=create_random_name(),
+            name=randstr(),
             description="description",
             environment="AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1",
             inputs=inputs,
@@ -218,10 +195,13 @@ class TestCommandJob(AzureRecordedTestCase):
 
     @MlPreparer()
     @recorded_by_proxy
-    def test_command_job_local(self, ml_subscription_id, ml_resource_group) -> None:
+    def test_command_job_local(self, randstr, **kwargs) -> None:
 
-        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
-        job_name = create_random_name()
+        subscription_id = kwargs.get("ml_subscription_id")
+        resource_group = kwargs.get("ml_resource_group")
+
+        client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
+        job_name = randstr()
         try:
             _ = client.jobs.get(job_name)
             print(f"Found existing job {job_name}")
@@ -241,10 +221,13 @@ class TestCommandJob(AzureRecordedTestCase):
     @pytest.mark.skip("TODO: 1210641- Re-enable when we switch to runner-style tests")
     @MlPreparer()
     @recorded_by_proxy
-    def test_command_job_with_params(self, ml_subscription_id, ml_resource_group) -> None:
+    def test_command_job_with_params(self, randstr, **kwargs) -> None:
 
-        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
-        job_name = create_random_name()
+        subscription_id = kwargs.get("ml_subscription_id")
+        resource_group = kwargs.get("ml_resource_group")
+
+        client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
+        job_name = randstr()
         params_override = [{"name": job_name}]
         job: CommandJob = Job.load(
             path="./tests/test_configs/command_job/simple_train_test.yml",
@@ -259,10 +242,13 @@ class TestCommandJob(AzureRecordedTestCase):
 
     @MlPreparer
     @recorded_by_proxy
-    def test_command_job_with_modified_environment(self, ml_subscription_id, ml_resource_group) -> None:
+    def test_command_job_with_modified_environment(self, randstr, **kwargs) -> None:
 
-        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
-        job_name = create_random_name()
+        subscription_id = kwargs.get("ml_subscription_id")
+        resource_group = kwargs.get("ml_resource_group")
+
+        client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
+        job_name = randstr()
         params_override = [{"name": job_name}]
         job = Job.load(
             path="./tests/test_configs/command_job/command_job_test.yml",
@@ -270,7 +256,7 @@ class TestCommandJob(AzureRecordedTestCase):
         )
         job = client.jobs.create_or_update(job=job)
 
-        job.name = create_random_name()
+        job.name = randstr()
         job.environment = "AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"
 
         job = client.jobs.create_or_update(job=job)
@@ -281,10 +267,13 @@ class TestCommandJob(AzureRecordedTestCase):
     @pytest.mark.skip("Investigate why cancel does not record some upload requests of code assets")
     @MlPreparer()
     @recorded_by_proxy
-    def test_command_job_cancel(self, ml_subscription_id, ml_resource_group) -> None:
+    def test_command_job_cancel(self, randstr, **kwargs) -> None:
 
-        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
-        job_name = create_random_name()
+        subscription_id = kwargs.get("ml_subscription_id")
+        resource_group = kwargs.get("ml_resource_group")
+
+        client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
+        job_name = randstr()
         print(f"Creating job to validate the cancel job operation: {job_name}")
         params_override = [{"name": job_name}]
         job = Job.load(
@@ -299,10 +288,14 @@ class TestCommandJob(AzureRecordedTestCase):
 
     @MlPreparer()
     @recorded_by_proxy
-    def test_command_job_dependency_label_resolution(self, ml_subscription_id, ml_resource_group) -> None:
+    def test_command_job_dependency_label_resolution(self, randstr, **kwargs) -> None:
         """Checks that dependencies of the form azureml:name@label are resolved to a version"""
 
-        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
+        subscription_id = kwargs.get("ml_subscription_id")
+        resource_group = kwargs.get("ml_resource_group")
+
+        client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
+        job_name = randstr()
         environment_name = str(uuid4())[:15]
         environment_versions = ["foo", "bar"]
         dataset_name = str(uuid4())
@@ -351,10 +344,13 @@ class TestCommandJob(AzureRecordedTestCase):
     @pytest.mark.skip(reason="Task 1791832: Inefficient, causing testing pipeline to time out.")
     @MlPreparer()
     @recorded_by_proxy
-    def test_command_job_archive_restore(self, ml_subscription_id, ml_resource_group) -> None:
+    def test_command_job_archive_restore(self, randstr, **kwargs) -> None:
 
-        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
-        job_name = create_random_name()
+        subscription_id = kwargs.get("ml_subscription_id")
+        resource_group = kwargs.get("ml_resource_group")
+
+        client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
+        job_name = randstr()
         print(f"Creating job {job_name}")
 
         params_override = [{"name": job_name}]
@@ -377,11 +373,14 @@ class TestCommandJob(AzureRecordedTestCase):
         client.jobs.restore(name=name)
         assert name in get_job_list()
 
-    @pytest.mark.skip()
     @MlPreparer()
     @recorded_by_proxy
-    def test_command_job_download(self, tmp_path: Path) -> None:
-        client: MLClient = client
+    def test_command_job_download(self, tmp_path: Path, **kwargs) -> None:
+
+        subscription_id = kwargs.get("ml_subscription_id")
+        resource_group = kwargs.get("ml_resource_group")
+
+        client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
 
         def wait_until_done(job: Job) -> None:
             poll_start_time = time.time()
@@ -406,11 +405,14 @@ class TestCommandJob(AzureRecordedTestCase):
         assert output_dir.exists()
         assert next(output_dir.iterdir(), None), "No artifacts were downloaded"
 
-    @pytest.mark.skip()
     @MlPreparer()
     @recorded_by_proxy
-    def test_command_job_local_run_download(self, tmp_path: Path) -> None:
-        client: MLClient = client
+    def test_command_job_local_run_download(self, tmp_path: Path, **kwargs) -> None:
+
+        subscription_id = kwargs.get("ml_subscription_id")
+        resource_group = kwargs.get("ml_resource_group")
+
+        client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
 
         def wait_until_done(job: Job) -> None:
             poll_start_time = time.time()
@@ -438,10 +440,13 @@ class TestCommandJob(AzureRecordedTestCase):
 
     @MlPreparer()
     @recorded_by_proxy
-    def test_command_job_invalid_datastore(self, ml_subscription_id, ml_resource_group) -> None:
+    def test_command_job_invalid_datastore(self, randstr, **kwargs) -> None:
 
-        client = self.create_ml_client(ml_subscription_id, ml_resource_group)
-        job_name = create_random_name()
+        subscription_id = kwargs.get("ml_subscription_id")
+        resource_group = kwargs.get("ml_resource_group")
+
+        client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
+        job_name = randstr()
         invalid_datastore_name = "non-existent-ds"  # referenced in command_job_inputs_incorrect_datastore_test.yml
         params_override = [{"name": job_name}]
         job: CommandJob = Job.load(
