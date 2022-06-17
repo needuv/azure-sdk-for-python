@@ -3,7 +3,7 @@ from azure.core.paging import ItemPaged
 
 import pytest
 from azure.core.polling import LROPoller
-from azure.ai.ml import MLClient
+from azure.ai.ml import MLClient, load_compute
 from azure.ai.ml.entities._compute.aml_compute import AmlCompute
 from azure.ai.ml.entities._compute.compute import Compute
 
@@ -23,7 +23,7 @@ class TestCompute(MlRecordedTest):
         client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
         compute_name = rand_compute_name()
         params_override = [{"name": compute_name}]
-        compute = Compute.load(
+        compute = load_compute(
             path="./tests/test_configs/compute/compute-aml-no-identity.yaml", params_override=params_override
         )
         compute_resource = client.compute.begin_create_or_update(compute)
@@ -47,7 +47,7 @@ class TestCompute(MlRecordedTest):
         client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
         compute_name = rand_compute_name()
         params_override = [{"name": compute_name}]
-        compute = Compute.load(
+        compute = load_compute(
             path="./tests/test_configs/compute/compute-ci.yaml",
             params_override=params_override,
         )

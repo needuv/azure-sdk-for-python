@@ -1,5 +1,4 @@
-from azure.ai.ml import dsl, Input, Output
-from azure.ai.ml.entities import load_component
+from azure.ai.ml import dsl, Input, Output, load_component
 from azure.ai.ml.entities import PipelineJob
 from pathlib import Path
 
@@ -9,19 +8,19 @@ parent_dir = str(Path(__file__).parent)
 def generate_dsl_pipeline() -> PipelineJob:
     # 1. Load component funcs
     prep_func = load_component(
-        yaml_file=parent_dir + "/prep.yml"
+        path=parent_dir + "/prep.yml"
     )
     transform_func = load_component(
-        yaml_file=parent_dir + "/transform.yml"
+        path=parent_dir + "/transform.yml"
     )
     train_func = load_component(
-        yaml_file=parent_dir + "/train.yml"
+        path=parent_dir + "/train.yml"
     )
     predict_func = load_component(
-        yaml_file=parent_dir + "/predict.yml"
+        path=parent_dir + "/predict.yml"
     )
     score_func = load_component(
-        yaml_file=parent_dir + "/score.yml"
+        path=parent_dir + "/score.yml"
     )
 
     # 2. Construct pipeline

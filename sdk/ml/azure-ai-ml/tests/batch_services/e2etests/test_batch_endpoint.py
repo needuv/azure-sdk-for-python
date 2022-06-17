@@ -10,10 +10,12 @@ from devtools_testutils import recorded_by_proxy
 
 
 class TestBatchEndpoint(MlRecordedTest):
+    @pytest.mark.usefixtures("data_with_2_versions")
+    @pytest.mark.usefixtures("batch_endpoint_model")
     @MlPreparer()
     @recorded_by_proxy
     def test_batch_endpoint_create_and_invoke(
-        self, data_with_2_versions: str, batch_endpoint_model: Model, **kwargs
+        self, **kwargs
     ) -> None:
 
         subscription_id = kwargs.get("ml_subscription_id")

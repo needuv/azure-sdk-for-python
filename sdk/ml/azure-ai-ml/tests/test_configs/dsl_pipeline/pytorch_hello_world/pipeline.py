@@ -1,5 +1,4 @@
-from azure.ai.ml import dsl
-from azure.ai.ml.entities import load_component
+from azure.ai.ml import dsl, load_component
 from azure.ai.ml import PyTorchDistribution
 from azure.ai.ml.entities import PipelineJob
 from pathlib import Path
@@ -12,7 +11,7 @@ parent_dir = str(Path(__file__).parent)
 def generate_dsl_pipeline() -> PipelineJob:
     # 1. Load component funcs
     pytorch_func = load_component(
-        yaml_file=parent_dir + "/component.yml"
+        path=parent_dir + "/component.yml"
     )
 
     # 2. Construct pipeline

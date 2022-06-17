@@ -7,7 +7,11 @@ MlPreparer = functools.partial(
     EnvironmentVariableLoader,
     "ml",
     ml_subscription_id="00000000-0000-0000-0000-000000000",
-    ml_resource_group="00000"
+    ml_resource_group="00000",
+    ml_workspace_name="00000"
+    ml_test_storage_account_name="teststorageaccount",
+    ml_test_storage_account_primary_key="primaryKey",
+    ml_test_storage_account_secondary_key="secondaryKey",
 )
 
 def create_random_name():

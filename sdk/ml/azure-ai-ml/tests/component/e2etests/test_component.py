@@ -9,16 +9,17 @@ from time import sleep
 import re
 
 from azure.core.exceptions import ResourceNotFoundError, HttpResponseError
-from azure.ai.ml import MLClient
+from azure.ai.ml import MLClient, load_component
 from azure.ai.ml._restclient.v2022_05_01.models import ComponentContainerData, ListViewType
-from azure.ai.ml import MpiDistribution
+from azure.ai.ml import MpiDistribution, load_environment
 from azure.ai.ml._utils._arm_id_utils import is_ARM_id_for_resource
-from azure.ai.ml.constants import ARM_ID_PREFIX
+from azure.ai.ml.constants import ARM_ID_PREFIX, ANONYMOUS_COMPONENT_NAME
 from azure.ai.ml.dsl._utils import _sanitize_python_variable_name
 from azure.ai.ml.entities import Component, CommandComponent, Environment
 from azure.ai.ml.entities._assets import Code
 from azure.ai.ml.constants import AzureMLResourceType, PROVIDER_RESOURCE_ID_WITH_VERSION
 from azure.ai.ml.dsl._utils import _change_working_dir
+from azure.ai.ml.entities._load_functions import load_code
 
 from ..unittests.test_component_schema import load_component_entity_from_rest_json
 from .._util import _COMPONENT_TIMEOUT_SECOND
@@ -40,7 +41,7 @@ def create_component(
     else:
         params_override += default_param_override
 
-    command_component = Component.load(
+    command_component = load_component(
         path=path,
         params_override=params_override,
     )
@@ -71,7 +72,7 @@ class TestComponent(MlRecordedTest):
 
         # create a new version
         params_override = [{"name": component_name}, {"version": 2}]
-        command_component = Component.load(
+        command_component = load_component(
             path="./tests/test_configs/components/helloworld_component.yml",
             params_override=params_override,
         )
@@ -99,7 +100,7 @@ class TestComponent(MlRecordedTest):
         client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
         component_name = randstr()
         params_override = [{"name": component_name}]
-        component_entity = Component.load(
+        component_entity = load_component(
             path="./tests/test_configs/components/{}".format(component_path),
             params_override=params_override,
         )
@@ -267,10 +268,10 @@ environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"""
         version: 1
         path: ."""
         )
-        new_code = Code.load(path=code_path)
+        new_code = load_code(path=code_path)
         code_resource = client._code.create_or_update(new_code)
         params_override = [{"name": component_name, "code": ARM_ID_PREFIX + code_resource.id}]
-        command_component = Component.load(
+        command_component = load_component(
             path=path,
             params_override=params_override,
         )
@@ -309,7 +310,7 @@ environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"""
         component_name = randstr()
         # Test mpi distribution
         params_override = [{"name": component_name}]
-        component_entity = Component.load(
+        component_entity = load_component(
             path="./tests/test_configs/components/helloworld_component_mpi.yml",
             params_override=params_override,
         )
@@ -371,7 +372,7 @@ environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"""
         # Test mpi distribution
         params_override = [{"name": component_name}]
         # Test torch distribution
-        component_entity = Component.load(
+        component_entity = load_component(
             path="./tests/test_configs/components/helloworld_component_pytorch.yml",
             params_override=params_override,
         )
@@ -398,7 +399,7 @@ environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"""
         # Test mpi distribution
         params_override = [{"name": component_name}]
         # Test tensorflow distribution
-        component_entity = Component.load(
+        component_entity = load_component(
             path="./tests/test_configs/components/helloworld_component_tensorflow.yml",
             params_override=params_override,
         )
@@ -414,10 +415,14 @@ environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"""
     @MlPreparer()
     @recorded_by_proxy
     def test_command_component_create_autoincrement(self, randstr: Callable[[], str], **kwargs) -> None:
+        subscription_id = kwargs.get("ml_subscription_id")
+        resource_group = kwargs.get("ml_resource_group")
+
+        client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
         component_name = randstr()
         params_override = [{"name": component_name}]
         path = "./tests/test_configs/components/component_no_version.yml"
-        command_component = Component.load(path=path, params_override=params_override)
+        command_component = load_component(path=path, params_override=params_override)
 
         assert command_component.version is None
         assert command_component._auto_increment_version
@@ -481,7 +486,7 @@ environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"""
 
         for version in environment_versions:
             client.environments.create_or_update(
-                Environment.load(
+                load_environment(
                     "./tests/test_configs/environment/environment_conda_inline.yml",
                     params_override=[{"name": environment_name}, {"version": version}],
                 )
@@ -549,11 +554,16 @@ environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"""
         resource_group = kwargs.get("ml_resource_group")
 
         client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
-        command_component = Component.load(path="./tests/test_configs/components/helloworld_component.yml")
+        command_component = load_component(path="./tests/test_configs/components/helloworld_component.yml")
         component_resource = client.components.create_or_update(command_component, is_anonymous=True)
-        assert component_resource.version == "1"
+        assert component_resource.name == ANONYMOUS_COMPONENT_NAME
+        assert component_resource.version == command_component.version
         component = client.components.get(component_resource.name, component_resource.version)
-        assert component_resource._to_dict() == component._to_dict()
+        # TODO 1807731: enable this check after server-side fix
+        omit_fields = ["creation_context"]
+        assert pydash.omit(component_resource._to_dict(), *omit_fields) == pydash.omit(
+            component._to_dict(), *omit_fields
+        )
 
     @MlPreparer()
     @recorded_by_proxy
@@ -634,7 +644,7 @@ environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"""
 
         client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
         component_path = "./tests/test_configs/components/helloworld_component.yml"
-        component: CommandComponent = Component.load(path=component_path)
+        component: CommandComponent = load_component(path=component_path)
         component.name = None
         component.command += " & echo ${{inputs.non_existent}} & echo ${{outputs.non_existent}}"
         validation_result = client.components.validate(component)
@@ -687,7 +697,7 @@ environment: azureml:AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"""
 
         # create a new version
         params_override = [{"name": component_name}, {"version": 2}]
-        parallel_component = Component.load(
+        parallel_component = load_component(
             path="./tests/test_configs/components/basic_parallel_component_score.yml",
             params_override=params_override,
         )

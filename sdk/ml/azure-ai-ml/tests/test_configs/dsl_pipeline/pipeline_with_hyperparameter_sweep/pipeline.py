@@ -1,11 +1,11 @@
 from azure.ai.ml import dsl, Input
-from .dsl_component import train_component_func, eval_component_func, score_component_func
+from .mldesigner_component import train_component_func, eval_component_func, score_component_func
 from azure.ai.ml.sweep import BanditPolicy, Choice, Randint, QUniform, QLogNormal, QLogUniform, QNormal, LogNormal, \
     LogUniform, Normal, Uniform
 
 
 def generate_dsl_pipeline_with_sweep_node():
-    # define a pipeline with dsl component
+    # define a pipeline with mldesigner component
     @dsl.pipeline(
         description="Tune hyperparameters using sample components",
         default_compute="cpu-cluster",

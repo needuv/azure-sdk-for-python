@@ -1,0 +1,815 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/v2.0/.well-known/openid-configuration",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Encoding": "gzip, deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "azsdk-python-identity/1.11.0b2 Python/3.8.6 (Windows-10-10.0.22000-SP0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "max-age=86400, private",
+        "Content-Length": "1753",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Jun 2022 21:30:33 GMT",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Set-Cookie": [
+          "fpc=AtlHRK_JoudHpiMClUmftFdNXR-uFAAAAOTzOtoOAAAA; expires=Thu, 14-Jul-2022 21:30:33 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly",
+          "stsservicecookie=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.12851.7 - WUS2 ProdSlices",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "token_endpoint": "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/v2.0/token",
+        "token_endpoint_auth_methods_supported": [
+          "client_secret_post",
+          "private_key_jwt",
+          "client_secret_basic"
+        ],
+        "jwks_uri": "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/discovery/v2.0/keys",
+        "response_modes_supported": [
+          "query",
+          "fragment",
+          "form_post"
+        ],
+        "subject_types_supported": [
+          "pairwise"
+        ],
+        "id_token_signing_alg_values_supported": [
+          "RS256"
+        ],
+        "response_types_supported": [
+          "code",
+          "id_token",
+          "code id_token",
+          "id_token token"
+        ],
+        "scopes_supported": [
+          "openid",
+          "profile",
+          "email",
+          "offline_access"
+        ],
+        "issuer": "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/v2.0",
+        "request_uri_parameter_supported": false,
+        "userinfo_endpoint": "https://graph.microsoft.com/oidc/userinfo",
+        "authorization_endpoint": "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/v2.0/authorize",
+        "device_authorization_endpoint": "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/v2.0/devicecode",
+        "http_logout_supported": true,
+        "frontchannel_logout_supported": true,
+        "end_session_endpoint": "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/v2.0/logout",
+        "claims_supported": [
+          "sub",
+          "iss",
+          "cloud_instance_name",
+          "cloud_instance_host_name",
+          "cloud_graph_host_name",
+          "msgraph_host",
+          "aud",
+          "exp",
+          "iat",
+          "auth_time",
+          "acr",
+          "nonce",
+          "preferred_username",
+          "name",
+          "tid",
+          "ver",
+          "at_hash",
+          "c_hash",
+          "email"
+        ],
+        "kerberos_endpoint": "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/kerberos",
+        "tenant_region_scope": "WW",
+        "cloud_instance_name": "microsoftonline.com",
+        "cloud_graph_host_name": "graph.windows.net",
+        "msgraph_host": "graph.microsoft.com",
+        "rbac_url": "https://pas.windows.net"
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/common/discovery/instance?api-version=1.1\u0026authorization_endpoint=https://login.microsoftonline.com/common/oauth2/authorize",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "Connection": "keep-alive",
+        "Cookie": "fpc=AtlHRK_JoudHpiMClUmftFdNXR-uFAAAAOTzOtoOAAAA; stsservicecookie=estsfd; x-ms-gateway-slice=estsfd",
+        "User-Agent": "azsdk-python-identity/1.11.0b2 Python/3.8.6 (Windows-10-10.0.22000-SP0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "max-age=86400, private",
+        "Content-Length": "945",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Jun 2022 21:30:33 GMT",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Set-Cookie": [
+          "fpc=AtlHRK_JoudHpiMClUmftFdNXR-uFAAAAOTzOtoOAAAA; expires=Thu, 14-Jul-2022 21:30:33 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly",
+          "stsservicecookie=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-ests-server": "2.1.12851.7 - SCUS ProdSlices",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "tenant_discovery_endpoint": "https://login.microsoftonline.com/common/.well-known/openid-configuration",
+        "api-version": "1.1",
+        "metadata": [
+          {
+            "preferred_network": "login.microsoftonline.com",
+            "preferred_cache": "login.windows.net",
+            "aliases": [
+              "login.microsoftonline.com",
+              "login.windows.net",
+              "login.microsoft.com",
+              "sts.windows.net"
+            ]
+          },
+          {
+            "preferred_network": "login.partner.microsoftonline.cn",
+            "preferred_cache": "login.partner.microsoftonline.cn",
+            "aliases": [
+              "login.partner.microsoftonline.cn",
+              "login.chinacloudapi.cn"
+            ]
+          },
+          {
+            "preferred_network": "login.microsoftonline.de",
+            "preferred_cache": "login.microsoftonline.de",
+            "aliases": [
+              "login.microsoftonline.de"
+            ]
+          },
+          {
+            "preferred_network": "login.microsoftonline.us",
+            "preferred_cache": "login.microsoftonline.us",
+            "aliases": [
+              "login.microsoftonline.us",
+              "login.usgovcloudapi.net"
+            ]
+          },
+          {
+            "preferred_network": "login-us.microsoftonline.com",
+            "preferred_cache": "login-us.microsoftonline.com",
+            "aliases": [
+              "login-us.microsoftonline.com"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47/oauth2/v2.0/token",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "client-request-id": "1d2c3b75-7ab7-4fc7-8754-396b827b81fe",
+        "Connection": "keep-alive",
+        "Content-Length": "292",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Cookie": "fpc=AtlHRK_JoudHpiMClUmftFdNXR-uFAAAAOTzOtoOAAAA; stsservicecookie=estsfd; x-ms-gateway-slice=estsfd",
+        "User-Agent": "azsdk-python-identity/1.11.0b2 Python/3.8.6 (Windows-10-10.0.22000-SP0)",
+        "x-client-cpu": "x64",
+        "x-client-current-telemetry": "4|730,0|",
+        "x-client-last-telemetry": "4|0|||",
+        "x-client-os": "win32",
+        "x-client-sku": "MSAL.Python",
+        "x-client-ver": "1.18.0",
+        "x-ms-lib-capability": "retry-after, h429"
+      },
+      "RequestBody": "client_id=6f5d7923-5be8-4e72-bf1b-d7d92ab7f00c\u0026grant_type=client_credentials\u0026client_info=1\u0026client_secret=T~W8Q~GzhJ6x._7UHB-8KwvUNlfoT.2AFqvz6bnK\u0026claims=%7B%22access_token%22%3A\u002B%7B%22xms_cc%22%3A\u002B%7B%22values%22%3A\u002B%5B%22CP1%22%5D%7D%7D%7D\u0026scope=https%3A%2F%2Fmanagement.azure.com%2F.default",
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-store, no-cache",
+        "client-request-id": "1d2c3b75-7ab7-4fc7-8754-396b827b81fe",
+        "Content-Length": "111",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Jun 2022 21:30:33 GMT",
+        "Expires": "-1",
+        "P3P": "CP=\u0022DSP CUR OTPi IND OTRi ONL FIN\u0022",
+        "Pragma": "no-cache",
+        "Set-Cookie": [
+          "fpc=AtlHRK_JoudHpiMClUmftFdNXR-uFAAAAOTzOtoOAAAA; expires=Thu, 14-Jul-2022 21:30:33 GMT; path=/; secure; HttpOnly; SameSite=None",
+          "x-ms-gateway-slice=estsfd; path=/; secure; samesite=none; httponly",
+          "stsservicecookie=estsfd; path=/; secure; samesite=none; httponly"
+        ],
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-clitelem": "1,0,0,,",
+        "x-ms-ests-server": "2.1.12851.7 - EUS ProdSlices",
+        "X-XSS-Protection": "0"
+      },
+      "ResponseBody": {
+        "token_type": "Bearer",
+        "expires_in": 86399,
+        "ext_expires_in": 86399,
+        "refresh_in": 43199,
+        "access_token": "Sanitized"
+      }
+    },
+    {
+      "RequestUri": "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/workspaces/sdk_vnext_cli?api-version=2022-01-01-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "azure-ai-ml/0.1.0b4 azsdk-python-mgmt-machinelearningservices/0.1.0 Python/3.8.6 (Windows-10-10.0.22000-SP0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Jun 2022 21:30:33 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "Transfer-Encoding": "chunked",
+        "Vary": [
+          "Accept-Encoding",
+          "Accept-Encoding"
+        ],
+        "x-aml-cluster": "vienna-westus2-02",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "7d4a12bb-c355-4574-b99d-e665e17d9ffd",
+        "x-ms-ratelimit-remaining-subscription-reads": "11948",
+        "x-ms-response-type": "standard",
+        "x-ms-routing-request-id": "CANADACENTRAL:20220614T213034Z:7d4a12bb-c355-4574-b99d-e665e17d9ffd",
+        "x-request-time": "0.021"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/00000000-0000-0000-0000-000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/workspaces/sdk_vnext_cli",
+        "name": "sdk_vnext_cli",
+        "type": "Microsoft.MachineLearningServices/workspaces",
+        "location": "westus2",
+        "tags": {},
+        "etag": null,
+        "properties": {
+          "friendlyName": "sdk_vnext_cli",
+          "description": "",
+          "storageAccount": "/subscriptions/00000000-0000-0000-0000-000000000/resourceGroups/00000/providers/Microsoft.Storage/storageAccounts/sacfxu3euzmal3o",
+          "keyVault": "/subscriptions/00000000-0000-0000-0000-000000000/resourceGroups/00000/providers/Microsoft.Keyvault/vaults/kvtest5e2dbhruyffiq",
+          "applicationInsights": "/subscriptions/00000000-0000-0000-0000-000000000/resourceGroups/00000/providers/Microsoft.insights/components/aicfxu3euzmal3o",
+          "hbiWorkspace": false,
+          "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+          "imageBuildCompute": null,
+          "provisioningState": "Succeeded",
+          "containerRegistry": "/subscriptions/00000000-0000-0000-0000-000000000/resourceGroups/00000/providers/Microsoft.ContainerRegistry/registries/crcfxu3euzmal3o",
+          "acrSkuTier": "Basic",
+          "notebookInfo": {
+            "resourceId": "c0b71b528e9c4a429ed24de6bb749e85",
+            "fqdn": "ml-sdkvnextcli-westus2-60073e53-722a-4f65-9800-09c562dd3717.westus2.notebooks.azure.net",
+            "isPrivateLinkEnabled": false,
+            "notebookPreparationError": null
+          },
+          "storageHnsEnabled": false,
+          "workspaceId": "60073e53-722a-4f65-9800-09c562dd3717",
+          "linkedModelInventoryArmId": null,
+          "privateLinkCount": 0,
+          "publicNetworkAccess": "Enabled",
+          "discoveryUrl": "https://westus2.api.azureml.ms/discovery",
+          "mlFlowTrackingUri": "azureml://westus2.api.azureml.ms/mlflow/v1.0/subscriptions/00000000-0000-0000-0000-000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/workspaces/sdk_vnext_cli",
+          "sdkTelemetryAppInsightsKey": "19f24253-9564-406c-9a1e-a48a21b145aa",
+          "sasGetterUri": ""
+        },
+        "identity": {
+          "type": "SystemAssigned",
+          "principalId": "381b607c-7a46-41a7-8cef-a65113e0923f",
+          "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47"
+        },
+        "sku": {
+          "name": "Basic",
+          "tier": "Basic"
+        },
+        "systemData": {
+          "createdAt": "2022-06-03T21:04:40.5842096Z",
+          "createdBy": "neduvvur@microsoft.com",
+          "createdByType": "User",
+          "lastModifiedAt": "2022-06-03T21:04:40.5842096Z",
+          "lastModifiedBy": "neduvvur@microsoft.com",
+          "lastModifiedByType": "User"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://westus2.api.azureml.ms/registrymanagement/v1.0/registries/testFeed/discovery",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json, text/json",
+        "Accept-Encoding": "gzip, deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "azure-ai-ml/0.1.0b4 azsdk-python-mgmt-machinelearningservices/0.1.0 Python/3.8.6 (Windows-10-10.0.22000-SP0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Jun 2022 21:30:35 GMT",
+        "Request-Context": "appId=cid-v1:2d2e8e63-272e-4b3c-8598-4ee570a0e70d",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "x-aml-cluster": "vienna-westus2-02",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.102"
+      },
+      "ResponseBody": {
+        "registryId": "f25c2962-9320-4a6b-a233-2df1e06e2ba0",
+        "registryName": "testFeed",
+        "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+        "primaryRegion": "master",
+        "regions": [
+          "master"
+        ],
+        "subscriptionId": "00000000-0000-0000-0000-000000000000",
+        "resourceGroup": null,
+        "workspaceName": null,
+        "primaryRegionResourceProviderUri": "https://cert-master.experiments.azureml-test.net/"
+      }
+    },
+    {
+      "RequestUri": "https://cert-master.experiments.azureml-test.net/mferp/managementfrontend/subscriptions/00000000-0000-0000-0000-000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/registries/testFeed/tempdatarefs/22001c12-8a3e-4c72-8105-ee3120843812/versions/1?api-version=2021-10-01-dataplanepreview",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "Connection": "keep-alive",
+        "Content-Length": "154",
+        "Content-Type": "application/json",
+        "User-Agent": "azure-ai-ml/0.1.0b4 azsdk-python-mgmt-machinelearningservices/0.1.0 Python/3.8.6 (Windows-10-10.0.22000-SP0)"
+      },
+      "RequestBody": {
+        "assetId": "azureml://registries/testFeed/codes/22001c12-8a3e-4c72-8105-ee3120843812/versions/1",
+        "temporaryDataReferenceType": "TemporaryBlobReference"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Jun 2022 21:30:36 GMT",
+        "Request-Context": "appId=cid-v1:512cc15a-13b5-415b-bfd0-dce7accb6bb1",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "x-aml-cluster": "vienna-test-westus2-02",
+        "X-Content-Type-Options": [
+          "nosniff",
+          "nosniff"
+        ],
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.888"
+      },
+      "ResponseBody": {
+        "blobReferenceForConsumption": {
+          "blobUri": "https://feedmaster2.blob.core.windows.net:443/testfeed-42dfdd62-5747-5c64-86cf-2956b7c7080d",
+          "storageAccountArmId": "/subscriptions/ad203158-bc5d-4e72-b764-2607833a71dc/resourceGroups/vienna-test-westus2/providers/Microsoft.Storage/storageAccounts/feedmaster2",
+          "credential": {
+            "credentialType": "SAS",
+            "sasUri": "https://feedmaster2.blob.core.windows.net/testfeed-42dfdd62-5747-5c64-86cf-2956b7c7080d?sv=2019-07-07\u0026sr=c\u0026sig=MQkHBrhzqYcs4Uf5%2FuYCfE%2F%2FCsOpWkOMg6bMgcONEso%3D\u0026spr=https\u0026skoid=e3f42e2c-d581-4b65-a966-631cfa961328\u0026sktid=72f988bf-86f1-41af-91ab-2d7cd011db47\u0026skt=2022-06-14T09%3A02%3A18Z\u0026ske=2022-06-15T17%3A12%3A18Z\u0026sks=b\u0026skv=2019-07-07\u0026st=2022-06-14T21%3A20%3A36Z\u0026se=2022-06-15T05%3A30%3A36Z\u0026sp=rcwl"
+          }
+        },
+        "imageReferenceForConsumption": null,
+        "temporaryDataReferenceId": "cf47cd1e-3a35-4d2d-a449-3c4a827fd5fc",
+        "temporaryDataReferenceType": null
+      }
+    },
+    {
+      "RequestUri": "https://feedmaster2.blob.core.windows.net/testfeed-42dfdd62-5747-5c64-86cf-2956b7c7080d/COMPONENT_PLACEHOLDER?sv=2019-07-07\u0026sr=c\u0026sig=MQkHBrhzqYcs4Uf5%2FuYCfE%2F%2FCsOpWkOMg6bMgcONEso%3D\u0026spr=https\u0026skoid=e3f42e2c-d581-4b65-a966-631cfa961328\u0026sktid=72f988bf-86f1-41af-91ab-2d7cd011db47\u0026skt=2022-06-14T09%3A02%3A18Z\u0026ske=2022-06-15T17%3A12%3A18Z\u0026sks=b\u0026skv=2019-07-07\u0026st=2022-06-14T21%3A20%3A36Z\u0026se=2022-06-15T05%3A30%3A36Z\u0026sp=rcwl",
+      "RequestMethod": "HEAD",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip, deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "azsdk-python-storage-blob/12.9.0 Python/3.8.6 (Windows-10-10.0.22000-SP0)",
+        "x-ms-date": "Tue, 14 Jun 2022 21:30:36 GMT",
+        "x-ms-version": "2020-10-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Date": "Tue, 14 Jun 2022 21:30:37 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Transfer-Encoding": "chunked",
+        "x-ms-error-code": "BlobNotFound",
+        "x-ms-version": "2020-10-02"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://feedmaster2.blob.core.windows.net/testfeed-42dfdd62-5747-5c64-86cf-2956b7c7080d/COMPONENT_PLACEHOLDER?sv=2019-07-07\u0026sr=c\u0026sig=MQkHBrhzqYcs4Uf5%2FuYCfE%2F%2FCsOpWkOMg6bMgcONEso%3D\u0026spr=https\u0026skoid=e3f42e2c-d581-4b65-a966-631cfa961328\u0026sktid=72f988bf-86f1-41af-91ab-2d7cd011db47\u0026skt=2022-06-14T09%3A02%3A18Z\u0026ske=2022-06-15T17%3A12%3A18Z\u0026sks=b\u0026skv=2019-07-07\u0026st=2022-06-14T21%3A20%3A36Z\u0026se=2022-06-15T05%3A30%3A36Z\u0026sp=rcwl",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip, deflate",
+        "Connection": "keep-alive",
+        "Content-Length": "35",
+        "Content-MD5": "L/DnSpFIn\u002BjaQWc\u002BsUQdcw==",
+        "Content-Type": "application/octet-stream",
+        "If-None-Match": "*",
+        "User-Agent": "azsdk-python-storage-blob/12.9.0 Python/3.8.6 (Windows-10-10.0.22000-SP0)",
+        "x-ms-blob-type": "BlockBlob",
+        "x-ms-date": "Tue, 14 Jun 2022 21:30:37 GMT",
+        "x-ms-version": "2020-10-02"
+      },
+      "RequestBody": "Y29tbWFuZF9jb21wb25lbnQ6IGNvZGVfcGxhY2Vob2xkZXI=",
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Content-MD5": "L/DnSpFIn\u002BjaQWc\u002BsUQdcw==",
+        "Date": "Tue, 14 Jun 2022 21:30:37 GMT",
+        "ETag": "\u00220x8DA4E4D1F809952\u0022",
+        "Last-Modified": "Tue, 14 Jun 2022 21:30:37 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-content-crc64": "KWRPkj\u002BQ\u002BTE=",
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2020-10-02"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://feedmaster2.blob.core.windows.net/testfeed-42dfdd62-5747-5c64-86cf-2956b7c7080d/COMPONENT_PLACEHOLDER?comp=metadata\u0026sv=2019-07-07\u0026sr=c\u0026sig=MQkHBrhzqYcs4Uf5%2FuYCfE%2F%2FCsOpWkOMg6bMgcONEso%3D\u0026spr=https\u0026skoid=e3f42e2c-d581-4b65-a966-631cfa961328\u0026sktid=72f988bf-86f1-41af-91ab-2d7cd011db47\u0026skt=2022-06-14T09%3A02%3A18Z\u0026ske=2022-06-15T17%3A12%3A18Z\u0026sks=b\u0026skv=2019-07-07\u0026st=2022-06-14T21%3A20%3A36Z\u0026se=2022-06-15T05%3A30%3A36Z\u0026sp=rcwl",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Accept-Encoding": "gzip, deflate",
+        "Connection": "keep-alive",
+        "Content-Length": "0",
+        "User-Agent": "azsdk-python-storage-blob/12.9.0 Python/3.8.6 (Windows-10-10.0.22000-SP0)",
+        "x-ms-date": "Tue, 14 Jun 2022 21:30:37 GMT",
+        "x-ms-meta-name": "22001c12-8a3e-4c72-8105-ee3120843812",
+        "x-ms-meta-upload_status": "completed",
+        "x-ms-meta-version": "1",
+        "x-ms-version": "2020-10-02"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Content-Length": "0",
+        "Date": "Tue, 14 Jun 2022 21:30:37 GMT",
+        "ETag": "\u00220x8DA4E4D1F8F1629\u0022",
+        "Last-Modified": "Tue, 14 Jun 2022 21:30:37 GMT",
+        "Server": [
+          "Windows-Azure-Blob/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "x-ms-request-server-encrypted": "true",
+        "x-ms-version": "2020-10-02"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://cert-master.experiments.azureml-test.net/mferp/managementfrontend/subscriptions/00000000-0000-0000-0000-000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/registries/testFeed/codes/22001c12-8a3e-4c72-8105-ee3120843812/versions/1?api-version=2021-10-01-dataplanepreview",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "Connection": "keep-alive",
+        "Content-Length": "161",
+        "Content-Type": "application/json",
+        "User-Agent": "azure-ai-ml/0.1.0b4 azsdk-python-mgmt-machinelearningservices/0.1.0 Python/3.8.6 (Windows-10-10.0.22000-SP0)"
+      },
+      "RequestBody": {
+        "properties": {
+          "isAnonymous": true,
+          "isArchived": false,
+          "codeUri": "https://feedmaster2.blob.core.windows.net/testfeed-42dfdd62-5747-5c64-86cf-2956b7c7080d/"
+        }
+      },
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "4",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Jun 2022 21:30:41 GMT",
+        "Location": "https://master.api.azureml-test.ms/assetstore/v1.0/operations/QU60xxPIUwt9cVW72t0HhJzO7EBpraS1c3emZeETdhE",
+        "Request-Context": "appId=cid-v1:512cc15a-13b5-415b-bfd0-dce7accb6bb1",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains; preload",
+        "x-aml-cluster": "vienna-test-westus2-02",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-async-operation-timeout": "PT1H",
+        "x-ms-response-type": "standard",
+        "x-request-time": "3.557"
+      },
+      "ResponseBody": "null"
+    },
+    {
+      "RequestUri": "https://master.api.azureml-test.ms/assetstore/v1.0/operations/QU60xxPIUwt9cVW72t0HhJzO7EBpraS1c3emZeETdhE",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Encoding": "gzip, deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "azure-ai-ml/0.1.0b4 azsdk-python-mgmt-machinelearningservices/0.1.0 Python/3.8.6 (Windows-10-10.0.22000-SP0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "102",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Jun 2022 21:31:12 GMT",
+        "Request-Context": "appId=cid-v1:512cc15a-13b5-415b-bfd0-dce7accb6bb1",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains; preload",
+        "x-aml-cluster": "vienna-test-westus2-01",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.039"
+      },
+      "ResponseBody": {
+        "assetId": "azureml://registries/testFeed/codes/22001c12-8a3e-4c72-8105-ee3120843812/versions/1"
+      }
+    },
+    {
+      "RequestUri": "https://cert-master.experiments.azureml-test.net/mferp/managementfrontend/subscriptions/00000000-0000-0000-0000-000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/registries/testFeed/codes/22001c12-8a3e-4c72-8105-ee3120843812/versions/1?api-version=2021-10-01-dataplanepreview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "Connection": "keep-alive",
+        "User-Agent": "azure-ai-ml/0.1.0b4 azsdk-python-mgmt-machinelearningservices/0.1.0 Python/3.8.6 (Windows-10-10.0.22000-SP0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Encoding": "gzip",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Jun 2022 21:31:13 GMT",
+        "Request-Context": "appId=cid-v1:512cc15a-13b5-415b-bfd0-dce7accb6bb1",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "Vary": "Accept-Encoding",
+        "x-aml-cluster": "vienna-test-westus2-02",
+        "X-Content-Type-Options": [
+          "nosniff",
+          "nosniff"
+        ],
+        "x-ms-response-type": "standard",
+        "x-request-time": "0.629"
+      },
+      "ResponseBody": {
+        "id": "azureml://registries/testFeed/codes/22001c12-8a3e-4c72-8105-ee3120843812/versions/1",
+        "name": "1",
+        "type": "Microsoft.MachineLearningServices/registries/codes/versions",
+        "properties": {
+          "description": null,
+          "tags": {},
+          "properties": {},
+          "isArchived": false,
+          "isAnonymous": false,
+          "codeUri": "https://feedmaster2.blob.core.windows.net/testfeed-42dfdd62-5747-5c64-86cf-2956b7c7080d/"
+        },
+        "systemData": {
+          "createdAt": "2022-06-14T21:30:37.8515104Z",
+          "createdBy": "6f5d7923-5be8-4e72-bf1b-d7d92ab7f00c",
+          "createdByType": "Application",
+          "lastModifiedAt": "2022-06-14T21:30:37.8515104Z",
+          "lastModifiedBy": "6f5d7923-5be8-4e72-bf1b-d7d92ab7f00c",
+          "lastModifiedByType": "Application"
+        }
+      }
+    },
+    {
+      "RequestUri": "https://cert-master.experiments.azureml-test.net/mferp/managementfrontend/subscriptions/00000000-0000-0000-0000-000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/registries/testFeed/components/test_52434457515/versions/0.0.1?api-version=2021-10-01-dataplanepreview",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip, deflate",
+        "Connection": "keep-alive",
+        "Content-Length": "1305",
+        "Content-Type": "application/json",
+        "User-Agent": "azure-ai-ml/0.1.0b4 azsdk-python-mgmt-machinelearningservices/0.1.0 Python/3.8.6 (Windows-10-10.0.22000-SP0)"
+      },
+      "RequestBody": {
+        "properties": {
+          "description": "This is the basic command component",
+          "properties": {},
+          "tags": {
+            "tag": "tagvalue",
+            "owner": "sdkteam"
+          },
+          "isAnonymous": false,
+          "isArchived": false,
+          "componentSpec": {
+            "$schema": "https://azuremlschemas.azureedge.net/development/commandComponent.schema.json",
+            "name": "test_52434457515",
+            "version": "0.0.1",
+            "display_name": "CommandComponentBasic",
+            "description": "This is the basic command component",
+            "tags": {
+              "tag": "tagvalue",
+              "owner": "sdkteam"
+            },
+            "is_deterministic": true,
+            "inputs": {
+              "component_in_number": {
+                "type": "number",
+                "optional": true,
+                "default": "10.99",
+                "description": "A number"
+              },
+              "component_in_path": {
+                "type": "uri_folder",
+                "description": "A path"
+              }
+            },
+            "outputs": {
+              "component_out_path": {
+                "type": "uri_folder"
+              }
+            },
+            "type": "command",
+            "command": "echo Hello World \u0026 echo [${{inputs.component_in_number}}] \u0026 echo ${{inputs.component_in_path}} \u0026 echo ${{outputs.component_out_path}} \u003E ${{outputs.component_out_path}}/component_in_number",
+            "code": "azureml://registries/testFeed/codes/22001c12-8a3e-4c72-8105-ee3120843812/versions/1",
+            "environment": "azureml:/subscriptions/00000000-0000-0000-0000-000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/workspaces/sdk_vnext_cli/environments/AzureML-sklearn-0.24-ubuntu18.04-py37-cpu/versions/1"
+          }
+        }
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Connection": "keep-alive",
+        "Content-Length": "24285",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 14 Jun 2022 21:31:13 GMT",
+        "Request-Context": "appId=cid-v1:512cc15a-13b5-415b-bfd0-dce7accb6bb1",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains; preload",
+        "x-aml-cluster": "vienna-test-westus2-02",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-response-type": "error",
+        "x-request-time": "0.283"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "UserError",
+          "message": "Component test_52434457515 has invalid spec, details: Bad workspace info in component spec. Please make sure workspace info defined in component spec align with your workspace.",
+          "details": [],
+          "additionalInfo": [
+            {
+              "type": "ComponentName",
+              "info": {
+                "value": "managementfrontend"
+              }
+            },
+            {
+              "type": "Correlation",
+              "info": {
+                "value": {
+                  "operation": "2d3084c2f565cc38dc6c4d4e678ce806",
+                  "request": "91da4e3843815946"
+                }
+              }
+            },
+            {
+              "type": "Environment",
+              "info": {
+                "value": "master"
+              }
+            },
+            {
+              "type": "Location",
+              "info": {
+                "value": "westus2"
+              }
+            },
+            {
+              "type": "Time",
+              "info": {
+                "value": "2022-06-14T21:31:13.396109\u002B00:00"
+              }
+            },
+            {
+              "type": "DebugInfo",
+              "info": {
+                "value": {
+                  "type": "Microsoft.MachineLearning.Common.Core.ServiceInvocationException",
+                  "message": "Service invocation failed!\r\nRequest: POST https://component.vienna-master.svc/component/v2.0/subscriptions/00000000-0000-0000-0000-000000000/resourceGroups/00000/providers/Microsoft.MachineLearningServices/registries/testFeed/components/?componentName=test_52434457515\u0026componentVersion=0.0.1\r\nStatus Code: 400 BadRequest\r\nError Code: UserError/BadArgument/ArgumentInvalid/InvalidComponent/InvalidComponentSpec\r\nReason Phrase: Component test_52434457515 has invalid spec, details: Bad workspace info in component spec. Please m\r\nResponse Body: {\n  \u0022error\u0022: {\n    \u0022code\u0022: \u0022UserError\u0022,\n    \u0022severity\u0022: null,\n    \u0022message\u0022: \u0022Component test_52434457515 has invalid spec, details: Bad workspace info in component spec. Please make sure workspace info defined in component spec align with your workspace.\u0022,\n    \u0022messageFormat\u0022: \u0022Component {componentName} has invalid spec, details: {errorMsg}\u0022,\n    \u0022messageParameters\u0022: {\n      \u0022componentName\u0022: \u0022test_52434457515\u0022,\n      \u0022errorMsg\u0022: \u0022Bad workspace info in component spec. Please make sure workspace info defined in component spec align with your workspace.\u0022\n    },\n    \u0022referenceCode\u0022: null,\n    \u0022detailsUri\u0022: null,\n    \u0022target\u0022: null,\n    \u0022details\u0022: [],\n    \u0022innerError\u0022: {\n      \u0022code\u0022: \u0022BadArgument\u0022,\n      \u0022innerError\u0022: {\n        \u0022code\u0022: \u0022ArgumentInvalid\u0022,\n        \u0022innerError\u0022: {\n          \u0022code\u0022: \u0022InvalidComponent\u0022,\n          \u0022innerError\u0022: {\n            \u0022code\u0022: \u0022InvalidComponentSpec\u0022,\n            \u0022innerError\u0022: null\n          }\n        }\n      }\n    },\n    \u0022debugInfo\u0022: {\n      \u0022type\u0022: \u0022Microsoft.MachineLearning.Common.Core.Exceptions.BaseException\u0022,\n      \u0022message\u0022: \u0022Component test_52434457515 has invalid spec, details: Bad workspace info in component spec. Please make sure workspace info defined in component spec align with your workspace.\u0022,\n      \u0022stackTrace\u0022: \u0022   at Microsoft.MachineLearning.Component.Services.Converters.ComponentVersionConverter.RegistryToParsedComponentMeta(Resource\u00601 componentVersion, IAssetStoreClient assetStoreClient, String overwriteComponentName, String overwriteComponentVersion) in /mnt/vss/_work/1/s/src/azureml-api/src/Component/Services/Converters/ComponentVersionConverter.cs:line 340\\n   at Microsoft.MachineLearning.Component.Services.Services.RegistryComponentVersionService.RegisterRegistryComponent(ComponentAccessContext componentAccessContext, String registryName, Resource\u00601 request, String componentName, String componentVersion) in /mnt/vss/_work/1/s/src/azureml-api/src/Component/Services/Services/RegistryComponentVersionService.cs:line 77\\n   at Microsoft.MachineLearning.Component.EntryPoints.Controllers.RegistryComponentVersionController.RegisterComponent(String subscriptionId, String resourceGroupName, String registryName, Resource\u00601 request, String componentName, String componentVersion) in /mnt/vss/_work/1/s/src/azureml-api/src/Component/EntryPoints/Controllers/RegistryComponentVersionController.cs:line 85\\n   at lambda_method1215135(Closure , Object )\\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)\\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.\u003CInvokeActionMethodAsync\u003Eg__Logged|12_1(ControllerActionInvoker invoker)\\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.\u003CInvokeNextActionFilterAsync\u003Eg__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)\\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)\\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State\u0026 next, Scope\u0026 scope, Object\u0026 state, Boolean\u0026 isCompleted)\\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()\\n--- End of stack trace from previous location ---\\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.\u003CInvokeNextResourceFilter\u003Eg__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)\\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)\\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State\u0026 next, Scope\u0026 scope, Object\u0026 state, Boolean\u0026 isCompleted)\\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()\\n--- End of stack trace from previous location ---\\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.\u003CInvokeAsync\u003Eg__Logged|17_1(ResourceInvoker invoker)\\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.\u003CInvokeAsync\u003Eg__Logged|17_1(ResourceInvoker invoker)\\n   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)\\n   at Common.WebApi.ActivityExtensions.JwtUserInformationExtraction.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi/ActivityExtensions/JwtUserInformationExtraction.cs:line 96\\n   at Microsoft.MachineLearning.Component.EntryPoints.Middleware.ApiTelemetryHandler.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Component/EntryPoints/Middleware/ApiTelemetryHandler.cs:line 90\\n   at Microsoft.MachineLearning.Component.EntryPoints.Middleware.ExternalApiTelemetryHandler.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Component/EntryPoints/Middleware/ExternalApiTelemetryHandler.cs:line 36\\n   at Microsoft.MachineLearning.Component.EntryPoints.Middleware.TracingContextHandler.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Component/EntryPoints/Middleware/TracingContextHandler.cs:line 36\\n   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)\\n   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)\\n   at Microsoft.MachineLearning.Common.WebApi.Audit.IfxAuditMiddleware.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi.Audit/IfxAuditMiddleware.cs:line 93\\n   at Common.WebApi.ActivityExtensions.JwtUserInformationExtraction.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi/ActivityExtensions/JwtUserInformationExtraction.cs:line 96\\n   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)\\n   at Microsoft.MachineLearning.Common.WebApi.Throttling.InMemoryThrottlingMiddleware.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi.Throttling/InMemoryThrottlingMiddleware.cs:line 113\\n   at Microsoft.MachineLearning.Common.WebApi.ErrorHandling.Capture.ProactiveRequestTimeOutMiddleWare.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi/ErrorHandling/Capture/ProactiveRequestTimeOutMiddleWare.cs:line 54\\n   at Microsoft.MachineLearning.Common.WebApi.Swagger.SwaggerTransformerMiddleware.Invoke(HttpContext httpContext) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi.Swagger/SwaggerTransformerMiddleware.cs:line 52\\n   at Microsoft.MachineLearning.Common.WebApi.Logging.RequestLoggingMiddleware.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi/Logging/RequestLoggingMiddleware.cs:line 33\\n   at Microsoft.MachineLearning.Common.WebApi.AppInsights.OperationContextMiddleware.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi/AppInsights/OperationContextMiddleware.cs:line 31\\n   at Microsoft.MachineLearning.Common.WebApi.ErrorHandling.ErrorResponseMiddleware.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi/ErrorHandling/Capture/ErrorResponseMiddleware.cs:line 92\u0022,\n      \u0022innerException\u0022: null,\n      \u0022data\u0022: {\n        \u0022BaseError\u0022: {\n          \u0022Definition\u0022: {\n            \u0022MessageFormat\u0022: \u0022Component {componentName} has invalid spec, details: {errorMsg}\u0022,\n            \u0022DetailsUri\u0022: null,\n            \u0022IsTransient\u0022: null,\n            \u0022CodesHierarchy\u0022: [\n              \u0022UserError\u0022,\n              \u0022BadArgument\u0022,\n              \u0022ArgumentInvalid\u0022,\n              \u0022InvalidComponent\u0022,\n              \u0022InvalidComponentSpec\u0022\n            ],\n            \u0022Code\u0022: \u0022InvalidComponentSpec\u0022\n          },\n          \u0022Message\u0022: \u0022Component test_52434457515 has invalid spec, details: Bad workspace info in component spec. Please make sure workspace info defined in component spec align with your workspace.\u0022,\n          \u0022MessageParameters\u0022: {\n            \u0022componentName\u0022: \u0022test_52434457515\u0022,\n            \u0022errorMsg\u0022: \u0022Bad workspace info in component spec. Please make sure workspace info defined in component spec align with your workspace.\u0022\n          },\n          \u0022Target\u0022: null,\n          \u0022RetryAfterSeconds\u0022: null\n        }\n      },\n      \u0022errorResponse\u0022: null\n    },\n    \u0022additionalInfo\u0022: null\n  },\n  \u0022correlation\u0022: {\n    \u0022operation\u0022: \u00222d3084c2f565cc38dc6c4d4e678ce806\u0022,\n    \u0022request\u0022: \u00224aad923fe522523a\u0022\n  },\n  \u0022environment\u0022: \u0022master\u0022,\n  \u0022location\u0022: \u0022westus2\u0022,\n  \u0022time\u0022: \u00222022-06-14T21:31:13.3734066\u002B00:00\u0022,\n  \u0022componentName\u0022: \u0022component\u0022\n}",
+                  "stackTrace": "   at Microsoft.MachineLearning.Common.WebApi.Client.ServiceInvoker._MakeRequest(UriBuilder builder, MethodDetails details, CancellationToken cancellationToken, Nullable\u00601 initialStreamPosition, Uri fallbackServiceAddress, Object[] parameters) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi.Client/ServiceInvoker.cs:line 881\n   at Polly.Retry.AsyncRetryEngine.ImplementationAsync[TResult](Func\u00603 action, Context context, CancellationToken cancellationToken, ExceptionPredicates shouldRetryExceptionPredicates, ResultPredicates\u00601 shouldRetryResultPredicates, Func\u00605 onRetryAsync, Int32 permittedRetryCount, IEnumerable\u00601 sleepDurationsEnumerable, Func\u00604 sleepDurationProvider, Boolean continueOnCapturedContext)\n   at Polly.AsyncPolicy.ExecuteAsync[TResult](Func\u00603 action, Context context, CancellationToken cancellationToken, Boolean continueOnCapturedContext)\n   at Microsoft.MachineLearning.Common.WebApi.Client.ServiceInvoker._Invoke[T](String methodId, Object[] parameters) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi.Client/ServiceInvoker.cs:line 254\n   at Microsoft.MachineLearning.ManagementFrontEnd.Services.Clients.ComponentServiceClientV2.RegisterRegistryComponent(RegistryContext registry, String name, String versionId, Resource\u00601 componentVersion) in /mnt/vss/_work/1/s/src/azureml-api/src/ManagementFrontEnd/Services/Clients/ComponentServiceClientV2.cs:line 105\n   at Microsoft.MachineLearning.ManagementFrontEnd.Services.Services.ComponentVersionServiceV2.Create(RegistryContext registry, String name, String version, Resource\u00601 versionEntity) in /mnt/vss/_work/1/s/src/azureml-api/src/ManagementFrontEnd/Services/Services/ComponentVersionServiceV2.cs:line 143\n   at Microsoft.MachineLearning.ManagementFrontEnd.Services.Services.ComponentVersionServiceV2.CreateOrUpdate(RegistryContext registry, String name, String version, Resource\u00601 versionEntity) in /mnt/vss/_work/1/s/src/azureml-api/src/ManagementFrontEnd/Services/Services/ComponentVersionServiceV2.cs:line 99\n   at Microsoft.MachineLearning.ManagementFrontEnd.EntryPoints.Api.V20211001Dataplane.Controllers.ResourceVersionControllerBase\u00602.CreateOrUpdate(RegistryContext registryContext, String name, String version, Resource\u00601 request, String apiVersion) in /mnt/vss/_work/1/s/src/azureml-api/src/ManagementFrontEnd/EntryPoints/Api/V20211001Dataplane/Controllers/ResourceVersionControllerBase.cs:line 70\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.TaskOfIActionResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.\u003CInvokeActionMethodAsync\u003Eg__Logged|12_1(ControllerActionInvoker invoker)\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.\u003CInvokeNextActionFilterAsync\u003Eg__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State\u0026 next, Scope\u0026 scope, Object\u0026 state, Boolean\u0026 isCompleted)\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.\u003CInvokeInnerFilterAsync\u003Eg__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.\u003CInvokeNextExceptionFilterAsync\u003Eg__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)",
+                  "innerException": null,
+                  "data": {},
+                  "errorResponse": {
+                    "error": {
+                      "code": "UserError",
+                      "severity": null,
+                      "message": "Component test_52434457515 has invalid spec, details: Bad workspace info in component spec. Please make sure workspace info defined in component spec align with your workspace.",
+                      "messageFormat": "Component {componentName} has invalid spec, details: {errorMsg}",
+                      "messageParameters": {
+                        "componentName": "test_52434457515",
+                        "errorMsg": "Bad workspace info in component spec. Please make sure workspace info defined in component spec align with your workspace."
+                      },
+                      "referenceCode": null,
+                      "detailsUri": null,
+                      "target": null,
+                      "details": [],
+                      "innerError": {
+                        "code": "BadArgument",
+                        "innerError": {
+                          "code": "ArgumentInvalid",
+                          "innerError": {
+                            "code": "InvalidComponent",
+                            "innerError": {
+                              "code": "InvalidComponentSpec",
+                              "innerError": null
+                            }
+                          }
+                        }
+                      },
+                      "debugInfo": {
+                        "type": "Microsoft.MachineLearning.Common.Core.Exceptions.BaseException",
+                        "message": "Component test_52434457515 has invalid spec, details: Bad workspace info in component spec. Please make sure workspace info defined in component spec align with your workspace.",
+                        "stackTrace": "   at Microsoft.MachineLearning.Component.Services.Converters.ComponentVersionConverter.RegistryToParsedComponentMeta(Resource\u00601 componentVersion, IAssetStoreClient assetStoreClient, String overwriteComponentName, String overwriteComponentVersion) in /mnt/vss/_work/1/s/src/azureml-api/src/Component/Services/Converters/ComponentVersionConverter.cs:line 340\n   at Microsoft.MachineLearning.Component.Services.Services.RegistryComponentVersionService.RegisterRegistryComponent(ComponentAccessContext componentAccessContext, String registryName, Resource\u00601 request, String componentName, String componentVersion) in /mnt/vss/_work/1/s/src/azureml-api/src/Component/Services/Services/RegistryComponentVersionService.cs:line 77\n   at Microsoft.MachineLearning.Component.EntryPoints.Controllers.RegistryComponentVersionController.RegisterComponent(String subscriptionId, String resourceGroupName, String registryName, Resource\u00601 request, String componentName, String componentVersion) in /mnt/vss/_work/1/s/src/azureml-api/src/Component/EntryPoints/Controllers/RegistryComponentVersionController.cs:line 85\n   at lambda_method1215135(Closure , Object )\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.\u003CInvokeActionMethodAsync\u003Eg__Logged|12_1(ControllerActionInvoker invoker)\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.\u003CInvokeNextActionFilterAsync\u003Eg__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State\u0026 next, Scope\u0026 scope, Object\u0026 state, Boolean\u0026 isCompleted)\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()\n--- End of stack trace from previous location ---\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.\u003CInvokeNextResourceFilter\u003Eg__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State\u0026 next, Scope\u0026 scope, Object\u0026 state, Boolean\u0026 isCompleted)\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()\n--- End of stack trace from previous location ---\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.\u003CInvokeAsync\u003Eg__Logged|17_1(ResourceInvoker invoker)\n   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.\u003CInvokeAsync\u003Eg__Logged|17_1(ResourceInvoker invoker)\n   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)\n   at Common.WebApi.ActivityExtensions.JwtUserInformationExtraction.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi/ActivityExtensions/JwtUserInformationExtraction.cs:line 96\n   at Microsoft.MachineLearning.Component.EntryPoints.Middleware.ApiTelemetryHandler.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Component/EntryPoints/Middleware/ApiTelemetryHandler.cs:line 90\n   at Microsoft.MachineLearning.Component.EntryPoints.Middleware.ExternalApiTelemetryHandler.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Component/EntryPoints/Middleware/ExternalApiTelemetryHandler.cs:line 36\n   at Microsoft.MachineLearning.Component.EntryPoints.Middleware.TracingContextHandler.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Component/EntryPoints/Middleware/TracingContextHandler.cs:line 36\n   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)\n   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)\n   at Microsoft.MachineLearning.Common.WebApi.Audit.IfxAuditMiddleware.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi.Audit/IfxAuditMiddleware.cs:line 93\n   at Common.WebApi.ActivityExtensions.JwtUserInformationExtraction.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi/ActivityExtensions/JwtUserInformationExtraction.cs:line 96\n   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)\n   at Microsoft.MachineLearning.Common.WebApi.Throttling.InMemoryThrottlingMiddleware.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi.Throttling/InMemoryThrottlingMiddleware.cs:line 113\n   at Microsoft.MachineLearning.Common.WebApi.ErrorHandling.Capture.ProactiveRequestTimeOutMiddleWare.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi/ErrorHandling/Capture/ProactiveRequestTimeOutMiddleWare.cs:line 54\n   at Microsoft.MachineLearning.Common.WebApi.Swagger.SwaggerTransformerMiddleware.Invoke(HttpContext httpContext) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi.Swagger/SwaggerTransformerMiddleware.cs:line 52\n   at Microsoft.MachineLearning.Common.WebApi.Logging.RequestLoggingMiddleware.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi/Logging/RequestLoggingMiddleware.cs:line 33\n   at Microsoft.MachineLearning.Common.WebApi.AppInsights.OperationContextMiddleware.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi/AppInsights/OperationContextMiddleware.cs:line 31\n   at Microsoft.MachineLearning.Common.WebApi.ErrorHandling.ErrorResponseMiddleware.Invoke(HttpContext context) in /mnt/vss/_work/1/s/src/azureml-api/src/Common/WebApi/ErrorHandling/Capture/ErrorResponseMiddleware.cs:line 92",
+                        "innerException": null,
+                        "data": {
+                          "BaseError": {
+                            "Definition": {
+                              "MessageFormat": "Component {componentName} has invalid spec, details: {errorMsg}",
+                              "DetailsUri": null,
+                              "IsTransient": null,
+                              "CodesHierarchy": [
+                                "UserError",
+                                "BadArgument",
+                                "ArgumentInvalid",
+                                "InvalidComponent",
+                                "InvalidComponentSpec"
+                              ],
+                              "Code": "InvalidComponentSpec"
+                            },
+                            "Message": "Component test_52434457515 has invalid spec, details: Bad workspace info in component spec. Please make sure workspace info defined in component spec align with your workspace.",
+                            "MessageParameters": {
+                              "componentName": "test_52434457515",
+                              "errorMsg": "Bad workspace info in component spec. Please make sure workspace info defined in component spec align with your workspace."
+                            },
+                            "Target": null,
+                            "RetryAfterSeconds": null
+                          }
+                        },
+                        "errorResponse": null
+                      },
+                      "additionalInfo": null
+                    },
+                    "correlation": {
+                      "operation": "2d3084c2f565cc38dc6c4d4e678ce806",
+                      "request": "4aad923fe522523a"
+                    },
+                    "environment": "master",
+                    "location": "westus2",
+                    "time": "2022-06-14T21:31:13.3734066\u002B00:00",
+                    "componentName": "component"
+                  }
+                }
+              }
+            },
+            {
+              "type": "InnerError",
+              "info": {
+                "value": {
+                  "code": "BadArgument",
+                  "innerError": {
+                    "code": "ArgumentInvalid",
+                    "innerError": {
+                      "code": "InvalidComponent",
+                      "innerError": {
+                        "code": "InvalidComponentSpec",
+                        "innerError": null
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

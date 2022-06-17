@@ -1,6 +1,5 @@
 from azure.core.exceptions import ResourceNotFoundError
-from azure.ai.ml import dsl, MLClient, Input, MpiDistribution
-from azure.ai.ml.entities import load_component
+from azure.ai.ml import dsl, Input, load_component
 from azure.ai.ml.entities import PipelineJob
 from azure.ai.ml.entities import Data
 from pathlib import Path
@@ -10,7 +9,7 @@ base_dir = str(Path(__file__).parent)
 
 def generate_dsl_pipeline() -> PipelineJob:
     # 1. Load component funcs
-    basic_func = load_component(yaml_file=base_dir + "/component.yml")
+    basic_func = load_component(path=base_dir + "/component.yml")
     uri_file_input = Input(type='uri_file', path="../../data/sample1.csv")
     uri_folder_input = Input(type='uri_folder', path="../../data")
 

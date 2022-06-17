@@ -1,4 +1,4 @@
-from azure.ai.ml import dsl, Input
+from azure.ai.ml import dsl, Input, load_component
 from azure.ai.ml.constants import AssetTypes, InputOutputModes
 from azure.ai.ml.entities import PipelineJob
 from azure.ai.ml.entities import Component as ComponentEntity
@@ -9,7 +9,7 @@ parent_dir = str(Path(__file__).parent)
 
 def generate_dsl_pipeline() -> PipelineJob:
     # 1. Load component funcs
-    batch_inference1 = ComponentEntity.load(
+    batch_inference1 = load_component(
         path=parent_dir + "/tabular_input_e2e.yml"
     )
 

@@ -1,6 +1,6 @@
 from azure.ai.ml.entities._workspace.workspace import Workspace
 import pytest
-from azure.ai.ml import MLClient
+from azure.ai.ml import MLClient, load_workspace
 from typing import Callable
 from azure.core.paging import ItemPaged
 from azure.ai.ml.constants import PublicNetworkAccess
@@ -31,7 +31,7 @@ class TestWorkspace(MlRecordedTest):
             {"description": wps_description},
             {"display_name": wps_display_name},
         ]
-        wps = Workspace.load(path="./tests/test_configs/workspace/workspace_min.yaml", params_override=params_override)
+        wps = load_workspace(path="./tests/test_configs/workspace/workspace_min.yaml", params_override=params_override)
         workspace = client.workspaces.begin_create(workspace=wps)
         assert workspace.name == wps_name
         assert workspace.location == location
@@ -99,7 +99,7 @@ class TestWorkspace(MlRecordedTest):
 
         wps_name = f"e2etest_{randstr()}"
         params_override = [{"name": wps_name}]
-        wps = Workspace.load(path="./tests/test_configs/workspace/workspace_cmk.yaml", params_override=params_override)
+        wps = load_workspace(path="./tests/test_configs/workspace/workspace_cmk.yaml", params_override=params_override)
 
         # the kv name "ws-e2e-test-cmk" is not in the ARM template since it causes name collision when re-creating a WS. Add it back when re-enabling this test.
         wps.customer_managed_key.key_vault = f"/subscriptions/{client._operation_scope.subscription_id}/resourceGroups/{client._operation_scope.resource_group_name}/providers/Microsoft.KeyVault/vaults/ws-e2e-test-cmk"

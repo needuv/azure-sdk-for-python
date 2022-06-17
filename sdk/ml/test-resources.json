@@ -129,6 +129,10 @@
           "description": "Name of the storage account used for e2e testing"
         }
       },
+      "storageAccountApiVersion": {
+        "type": "string",
+        "defaultValue": "2021-02-01"
+      },
       "testBlobContainerName": {
         "type": "string",
         "defaultValue": "testblob",
@@ -473,7 +477,7 @@
     "resources": [
       {
         "type": "Microsoft.Storage/storageAccounts",
-        "apiVersion": "2021-02-01",
+        "apiVersion": "[parameters('storageAccountApiVersion')]",
         "name": "[parameters('testStorageAccountName')]",
         "location": "[resourceGroup().location]",
         "sku": {
@@ -487,7 +491,7 @@
       },
       {
         "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-        "apiVersion": "2021-02-01",
+        "apiVersion": "[parameters('storageAccountApiVersion')]",
         "name": "[concat(parameters('testStorageAccountName'), '/default/', parameters('testBlobContainerName'))]",
         "dependsOn": [
             "[resourceId('Microsoft.Storage/storageAccounts', parameters('testStorageAccountName'))]"
@@ -498,7 +502,7 @@
       },
       {
         "type": "Microsoft.Storage/storageAccounts/fileServices/shares",
-        "apiVersion": "2021-02-01",
+        "apiVersion": "[parameters('storageAccountApiVersion')]",
         "name": "[concat(parameters('testStorageAccountName'), '/default/', parameters('testFileShareName'))]",
         "dependsOn": [
             "[resourceId('Microsoft.Storage/storageAccounts', parameters('testStorageAccountName'))]"
@@ -870,5 +874,23 @@
           }
         }
       }
-    ]
+    ],
+    "outputs": {
+      "ML_WORKSPACE_NAME": {
+        "type": "string",
+        "value": "[parameters('workspaceName')]"
+      },
+      "ML_TEST_STORAGE_ACCOUNT_NAME": {
+        "type": "string",
+        "value": "[parameters('testStorageAccountName')]"
+      },
+      "ML_TEST_STORAGE_ACCOUNT_PRIMARY_KEY": {
+        "type": "string",
+        "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('testStorageAccountName')), parameters('storageAccountApiVersion')).keys[0].value]"
+      },
+      "ML_TEST_STORAGE_ACCOUNT_SECONDARY_KEY": {
+        "type": "string",
+        "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('testStorageAccountName')), parameters('storageAccountApiVersion')).keys[1].value]"
+      }
+    }
   }

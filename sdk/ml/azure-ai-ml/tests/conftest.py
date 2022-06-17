@@ -6,7 +6,7 @@ import uuid
 import os
 from pathlib import Path
 
-from azure.ai.ml.operations._run_history_constants import RunHistoryConstants
+from azure.ai.ml._operations.run_history_constants import RunHistoryConstants
 from azure.ai.ml._scope_dependent_operations import OperationScope
 import pytest
 from pytest_mock import MockFixture
@@ -36,6 +36,7 @@ def pytest_addoption(parser):
 def start_proxy(test_proxy):
     return
 
+
 @pytest.fixture
 def location(request):
     return request.config.getoption("--location")
@@ -56,7 +57,7 @@ def mock_workspace_scope() -> OperationScope:
 @pytest.fixture
 def mock_machinelearning_client(mocker: MockFixture) -> MLClient:
     # TODO(1628638): remove when 2022_02 api is available in ARM
-    mocker.patch("azure.ai.ml.operations.JobOperations._get_workspace_url", return_value="xxx")
+    mocker.patch("azure.ai.ml._operations.JobOperations._get_workspace_url", return_value="xxx")
     yield MLClient(
         credential=Mock(spec_set=DefaultAzureCredential),
         subscription_id=Test_Subscription,
@@ -308,26 +309,6 @@ def get_auth():
         print(f"Using Service Principal auth with tenantId {tenant_id}")
 
     return auth
-
-
-@pytest.fixture
-def storage_account_name(client: MLClient) -> str:
-    storage_client = StorageManagementClient(client._credential, client._operation_scope._subscription_id)
-    storage_account_list = storage_client.storage_accounts.list()
-    return [
-        account
-        for account in storage_account_list
-        if (account.name.startswith("sdkvnextcli") and client._operation_scope._resource_group_name in account.id)
-    ][0].name
-
-
-@pytest.fixture
-def account_keys(client: MLClient, storage_account_name: str) -> Tuple[str, str]:
-    storage_client = StorageManagementClient(client._credential, client._operation_scope._subscription_id)
-    keys = storage_client.storage_accounts.list_keys(
-        client._operation_scope._resource_group_name, storage_account_name
-    ).keys
-    return keys[0].value, keys[1].value
 
 
 @pytest.fixture

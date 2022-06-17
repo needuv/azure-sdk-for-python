@@ -3,9 +3,9 @@ from multiprocessing.pool import ThreadPool
 from typing import Any
 
 import pytest
-from azure.ai.ml._operations.job_ops_helper import _wait_before_polling
-from azure.ai.ml._operations.operation_orchestrator import OperationOrchestrator
-from azure.ai.ml._operations.run_history_constants import JobStatus, RunHistoryConstants
+from azure.ai.ml.operations._job_ops_helper import _wait_before_polling
+from azure.ai.ml.operations._operation_orchestrator import OperationOrchestrator
+from azure.ai.ml.operations._run_history_constants import JobStatus, RunHistoryConstants
 from azure.ai.ml.entities._builders.command_func import command
 from azure.ai.ml.entities._inputs_outputs import Input
 from azure.ai.ml.entities._job.job import Job
@@ -14,8 +14,11 @@ from mock import patch
 from azure.ai.ml.entities._job.sweep.early_termination_policy import TruncationSelectionPolicy
 from azure.ai.ml.entities._job.sweep.search_space import LogUniform
 
+from ml.base import ScenarioTest
+from ml.mock_multithreading import serial_map
 from tempfile import TemporaryDirectory
 from pathlib import Path
+from azure.ai.ml import load_job
 
 from ml_test import MlRecordedTest, MlPreparer, create_random_name
 from devtools_testutils import recorded_by_proxy
@@ -36,16 +39,16 @@ class TestSweepJob(MlRecordedTest):
         job_name = randstr()
 
         params_override = [{"name": job_name}]
-        sweep_job = Job.load(
+        sweep_job = load_job(
             path="./tests/test_configs/sweep_job/sweep_job_test.yaml",
             params_override=params_override,
         )
-        sweep_job_resource = client.jobs.create_or_update(job=sweep_job)
+        sweep_job_resource = self.client.jobs.create_or_update(job=sweep_job)
         assert sweep_job_resource.name == job_name
         assert sweep_job_resource.trial.environment_variables["test_var1"] == "set"
         assert sweep_job_resource.status in RunHistoryConstants.IN_PROGRESS_STATUSES
 
-        sweep_job_resource_2 = client.jobs.get(job_name)
+        sweep_job_resource_2 = self.client.jobs.get(job_name)
         assert sweep_job_resource.name == sweep_job_resource_2.name
 
     @MlPreparer()
@@ -60,15 +63,15 @@ class TestSweepJob(MlRecordedTest):
         job_name = randstr()
 
         params_override = [{"name": job_name}]
-        sweep_job = Job.load(
+        sweep_job = load_job(
             path="./tests/test_configs/sweep_job/sweep_job_test_inputs.yaml",
             params_override=params_override,
         )
-        sweep_job_resource = client.jobs.create_or_update(job=sweep_job)
+        sweep_job_resource = self.client.jobs.create_or_update(job=sweep_job)
         assert sweep_job_resource.name == job_name
         assert sweep_job_resource.status in RunHistoryConstants.IN_PROGRESS_STATUSES
 
-        sweep_job_resource_2 = client.jobs.get(job_name)
+        sweep_job_resource_2 = self.client.jobs.get(job_name)
         assert sweep_job_resource.name == sweep_job_resource_2.name
         assert sweep_job_resource_2.inputs is not None
         assert len(sweep_job_resource_2.inputs) == 2
@@ -87,7 +90,7 @@ class TestSweepJob(MlRecordedTest):
         job_name = randstr()
 
         params_override = [{"name": job_name}]
-        sweep_job = Job.load(
+        sweep_job = load_job(
             path="./tests/test_configs/sweep_job/sweep_job_minimal_test.yaml",
             params_override=params_override,
         )
@@ -110,7 +113,7 @@ class TestSweepJob(MlRecordedTest):
         job_name = randstr()
 
         params_override = [{"name": job_name}]
-        sweep_job = Job.load(
+        sweep_job = load_job(
             path="./tests/test_configs/sweep_job/sweep_job_minimal_test.yaml",
             params_override=params_override,
         )
@@ -141,7 +144,7 @@ class TestSweepJob(MlRecordedTest):
         client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
 
         job = client.jobs.create_or_update(
-            Job.load(
+            load_job(
                 path="./tests/test_configs/sweep_job/sweep_job_minimal_outputs.yaml",
                 params_override=[{"name": randstr()}],
             )

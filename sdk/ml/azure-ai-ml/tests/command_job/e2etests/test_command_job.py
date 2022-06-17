@@ -1,33 +1,30 @@
-import functools
-from operator import sub
 import time
 from typing import Any, Callable
-from uuid import uuid4
-from azure.ai.ml._operations.job_ops_helper import _wait_before_polling
+from azure.ai.ml.operations._job_ops_helper import _wait_before_polling
 from azure.ai.ml._azure_environments import ENDPOINT_URLS, _get_cloud_details, resource_to_scopes
 from azure.ai.ml.entities._assets._artifacts.data import Data
 from azure.ai.ml.entities._assets._artifacts.dataset import Dataset
 from azure.ai.ml.entities._assets.environment import Environment
 import jwt
 from mock import patch
-from azure.ai.ml.constants import TID_FMT, LOCAL_COMPUTE_TARGET
-from azure.ai.ml._operations.operation_orchestrator import OperationOrchestrator
+from azure.ai.ml.constants import TID_FMT, LOCAL_COMPUTE_TARGET, COMMON_RUNTIME_ENV_VAR
+from azure.ai.ml.operations._operation_orchestrator import OperationOrchestrator
 from azure.ai.ml.entities._job.command_job import CommandJob
 from azure.ai.ml.entities._job.distribution import MpiDistribution
 from azure.ai.ml.entities._job.job import Job
 from azure.ai.ml.constants import AssetTypes
-from azure.ai.ml import command
+from azure.ai.ml import command, load_environment
 import pytest
 from azure.ai.ml._restclient.v2022_02_01_preview.models import AmlToken, ListViewType
 
 
-from azure.ai.ml import MLClient, Input
-from azure.ai.ml._operations.run_history_constants import RunHistoryConstants, JobStatus
+from azure.ai.ml import MLClient, Input, load_job
+from azure.ai.ml.operations._run_history_constants import RunHistoryConstants, JobStatus
 from azure.ai.ml._utils._arm_id_utils import AMLVersionedArmId
 from azure.ai.ml._ml_exceptions import ValidationException
 
 from devtools_testutils import recorded_by_proxy
-from ml_test import MlRecordedTest, MlPreparer, create_random_name
+from ml_test import MlRecordedTest, MlPreparer
 from time import sleep
 from pathlib import Path
 
@@ -60,7 +57,7 @@ class TestCommandJob(MlRecordedTest):
             print(f"Job {job_name} not found: {ex}")
 
         params_override = [{"name": job_name}]
-        job = Job.load(
+        job = load_job(
             path="./tests/test_configs/command_job/command_job_test.yml",
             params_override=params_override,
         )
@@ -93,7 +90,7 @@ class TestCommandJob(MlRecordedTest):
         client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
         job_name = randstr()
         params_override = [{"name": job_name}]
-        job = Job.load(
+        job = load_job(
             path="./tests/test_configs/command_job/command_job_test_with_local_dataset.yml",
             params_override=params_override,
         )
@@ -121,7 +118,7 @@ class TestCommandJob(MlRecordedTest):
         client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
         job_name = randstr()
         params_override = [{"name": job_name}]
-        job = Job.load(
+        job = load_job(
             path="./tests/test_configs/command_job/command_job_test_with_dataset.yml",
             params_override=params_override,
         )
@@ -209,7 +206,7 @@ class TestCommandJob(MlRecordedTest):
             print(f"Job {job_name} not found: {ex}")
 
         params_override = [{"name": job_name}]
-        job = Job.load(
+        job = load_job(
             path="./tests/test_configs/command_job/local_job.yaml",
             params_override=params_override,
         )
@@ -217,6 +214,7 @@ class TestCommandJob(MlRecordedTest):
         assert command_job.name == job_name
         assert command_job.environment == "AzureML-sklearn-0.24-ubuntu18.04-py37-cpu:1"
         assert command_job.compute == "local"
+        assert command_job.environment_variables[COMMON_RUNTIME_ENV_VAR] == "true"
 
     @pytest.mark.skip("TODO: 1210641- Re-enable when we switch to runner-style tests")
     @MlPreparer()
@@ -229,7 +227,7 @@ class TestCommandJob(MlRecordedTest):
         client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
         job_name = randstr()
         params_override = [{"name": job_name}]
-        job: CommandJob = Job.load(
+        job: CommandJob = load_job(
             path="./tests/test_configs/command_job/simple_train_test.yml",
             params_override=params_override,
         )
@@ -250,7 +248,7 @@ class TestCommandJob(MlRecordedTest):
         client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
         job_name = randstr()
         params_override = [{"name": job_name}]
-        job = Job.load(
+        job = load_job(
             path="./tests/test_configs/command_job/command_job_test.yml",
             params_override=params_override,
         )
@@ -276,7 +274,7 @@ class TestCommandJob(MlRecordedTest):
         job_name = randstr()
         print(f"Creating job to validate the cancel job operation: {job_name}")
         params_override = [{"name": job_name}]
-        job = Job.load(
+        job = load_job(
             path="./tests/test_configs/command_job/simple_train_test.yml",
             params_override=params_override,
         )
@@ -290,6 +288,7 @@ class TestCommandJob(MlRecordedTest):
     @recorded_by_proxy
     def test_command_job_dependency_label_resolution(self, randstr, **kwargs) -> None:
         """Checks that dependencies of the form azureml:name@label are resolved to a version"""
+        from uuid import uuid4
 
         subscription_id = kwargs.get("ml_subscription_id")
         resource_group = kwargs.get("ml_resource_group")
@@ -318,7 +317,7 @@ class TestCommandJob(MlRecordedTest):
                 Data(name=data_name, version=version, path="tests/test_configs/data/sample1.csv")
             )
 
-        job = Job.load(
+        job = load_job(
             path="./tests/test_configs/command_job/simple_train_test.yml",
             params_override=[
                 {"name": job_name},
@@ -354,7 +353,7 @@ class TestCommandJob(MlRecordedTest):
         print(f"Creating job {job_name}")
 
         params_override = [{"name": job_name}]
-        job = Job.load(
+        job = load_job(
             path="./tests/test_configs/command_job/command_job_test.yml",
             params_override=params_override,
         )
@@ -389,7 +388,7 @@ class TestCommandJob(MlRecordedTest):
                 job = client.jobs.get(job.name)
 
         job = client.jobs.create_or_update(
-            Job.load(
+            load_job(
                 path="./tests/test_configs/command_job/command_job_quick_with_output.yml",
                 params_override=[{"name": self.kwargs["jobName"]}],
             )
@@ -421,7 +420,7 @@ class TestCommandJob(MlRecordedTest):
                 job = client.jobs.get(job.name)
 
         job = client.jobs.create_or_update(
-            Job.load(
+            load_job(
                 path="./tests/test_configs/command_job/command_job_quick_with_output.yml",
                 params_override=[{"name": self.kwargs["jobName"]}, {"compute": LOCAL_COMPUTE_TARGET}],
             )
@@ -449,7 +448,7 @@ class TestCommandJob(MlRecordedTest):
         job_name = randstr()
         invalid_datastore_name = "non-existent-ds"  # referenced in command_job_inputs_incorrect_datastore_test.yml
         params_override = [{"name": job_name}]
-        job: CommandJob = Job.load(
+        job: CommandJob = load_job(
             path="./tests/test_configs/command_job/command_job_inputs_incorrect_datastore_test.yml",
             params_override=params_override,
         )

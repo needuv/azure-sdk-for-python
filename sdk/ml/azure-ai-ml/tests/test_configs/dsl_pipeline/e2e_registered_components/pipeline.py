@@ -1,5 +1,4 @@
-from azure.ai.ml import dsl, MLClient, Input
-from azure.ai.ml.entities import load_component
+from azure.ai.ml import dsl, MLClient, Input, load_component
 from azure.ai.ml.entities import PipelineJob
 from azure.ai.ml.entities import Component as ComponentEntity
 from pathlib import Path

@@ -6,6 +6,7 @@ from azure.ai.ml import MLClient
 from typing import Callable
 from azure.ai.ml.entities import WorkspaceConnection
 from azure.ai.ml._restclient.v2022_01_01_preview.models import ConnectionAuthType, ConnectionCategory
+from azure.ai.ml import load_workspace_connection
 from ml_test import MlRecordedTest, MlPreparer
 from devtools_testutils import recorded_by_proxy
 
@@ -26,7 +27,7 @@ class TestWorkspaceConnections(MlRecordedTest):
         client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
         wps_connection_name = f"e2etest_wps_conn_{randstr()}"
 
-        wps_connection = WorkspaceConnection.load(path="./tests/test_configs/workspace_connection/python_feed_pat.yaml")
+        wps_connection = load_workspace_connection(path="./tests/test_configs/workspace_connection/python_feed_pat.yaml")
         wps_connection.name = wps_connection_name
 
         wps_connection = client.connections.create_or_update(workspace_connection=wps_connection)
@@ -75,7 +76,7 @@ class TestWorkspaceConnections(MlRecordedTest):
         client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
         wps_connection_name = f"e2etest_wps_conn_{randstr()}"
 
-        wps_connection = WorkspaceConnection.load(path="./tests/test_configs/workspace_connection/git_pat.yaml")
+        wps_connection = load_workspace_connection(path="./tests/test_configs/workspace_connection/git_pat.yaml")
         wps_connection.name = wps_connection_name
 
         wps_connection = client.connections.create_or_update(workspace_connection=wps_connection)
@@ -123,7 +124,7 @@ class TestWorkspaceConnections(MlRecordedTest):
         client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
         wps_connection_name = f"e2etest_wps_conn_{randstr()}"
 
-        wps_connection = WorkspaceConnection.load(
+        wps_connection = load_workspace_connection(
             path="./tests/test_configs/workspace_connection/container_registry_managed_identity.yaml"
         )
         wps_connection.name = wps_connection_name
@@ -175,7 +176,7 @@ class TestWorkspaceConnections(MlRecordedTest):
         client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
         wps_connection_name = f"e2etest_wps_conn_{randstr()}"
 
-        wps_connection = WorkspaceConnection.load(path="./tests/test_configs/workspace_connection/git_user_pwd.yaml")
+        wps_connection = load_workspace_connection(path="./tests/test_configs/workspace_connection/git_user_pwd.yaml")
         wps_connection.name = wps_connection_name
 
         wps_connection = client.connections.create_or_update(workspace_connection=wps_connection)
@@ -227,7 +228,7 @@ class TestWorkspaceConnections(MlRecordedTest):
         client = self.create_ml_client(subscription_id=subscription_id, resource_group_name=resource_group)
         wps_connection_name = f"e2etest_wps_conn_{randstr()}"
 
-        wps_connection = WorkspaceConnection.load(
+        wps_connection = load_workspace_connection(
             path="./tests/test_configs/workspace_connection/fs_service_principal.yaml"
         )
         wps_connection.name = wps_connection_name

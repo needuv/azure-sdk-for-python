@@ -7,11 +7,6 @@ log_verbosity: debug
 task: text_classification
 primary_metric: accuracy
 
-properties:
-  _automl_internal_enable_mltable_quick_profile: "true"
-  _automl_internal_label: "latest"
-  _automl_internal_save_mlflow: "true"
-
 limits:
   timeout_minutes: 30
 

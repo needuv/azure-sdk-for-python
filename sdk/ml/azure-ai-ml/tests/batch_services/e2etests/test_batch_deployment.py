@@ -7,8 +7,8 @@ from typing import Callable
 import pytest
 from azure.ai.ml import MLClient
 from azure.ai.ml.entities import BatchDeployment, BatchEndpoint, Environment, Job, Model
-from azure.ai.ml._operations.job_ops_helper import _wait_before_polling
-from azure.ai.ml._operations.run_history_constants import RunHistoryConstants
+from azure.ai.ml.operations._job_ops_helper import _wait_before_polling
+from azure.ai.ml.operations._run_history_constants import RunHistoryConstants
 from azure.ai.ml._utils._arm_id_utils import AMLVersionedArmId
 from azure.ai.ml.entities._inputs_outputs import Input
 from azure.ai.ml.constants import AssetTypes

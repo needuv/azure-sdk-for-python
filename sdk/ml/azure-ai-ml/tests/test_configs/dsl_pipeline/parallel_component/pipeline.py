@@ -1,7 +1,6 @@
-from azure.ai.ml import dsl, Input
+from azure.ai.ml import dsl, Input, load_component
 from azure.ai.ml.constants import AssetTypes, InputOutputModes
 from azure.ai.ml.entities import PipelineJob
-from azure.ai.ml.entities import load_component
 from pathlib import Path
 
 parent_dir = str(Path(__file__).parent)
@@ -10,19 +9,19 @@ parent_dir = str(Path(__file__).parent)
 def generate_dsl_pipeline() -> PipelineJob:
     # 1. Load component funcs
     get_data = load_component(
-        yaml_file=parent_dir + "/get_data.yml"
+        path=parent_dir + "/get_data.yml"
     )
 
     file_batch_inference = load_component(
-        yaml_file=parent_dir + "/file_batch_inference.yml"
+        path=parent_dir + "/file_batch_inference.yml"
     )
     file_batch_inference_duplicate = load_component(
-        yaml_file=parent_dir + "/file_batch_inference.yml"
+        path=parent_dir + "/file_batch_inference.yml"
     )
     tabular_batch_inference = load_component(
-        yaml_file=parent_dir + "/tabular_batch_inference.yml"
+        path=parent_dir + "/tabular_batch_inference.yml"
     )
-    convert_data = load_component(yaml_file=parent_dir + "/convert_data.yml")
+    convert_data = load_component(path=parent_dir + "/convert_data.yml")
 
     # Construct pipeline
     @dsl.pipeline(default_compute="cpu-cluster")
