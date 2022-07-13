@@ -4,10 +4,13 @@
 
 ### Features Added
 
+- Added `begin_recognize_custom_entities` client method to recognize custom named entities in documents.
+
 ### Breaking Changes
 
 - Removed the Extractive Text Summarization feature and related models: `ExtractSummaryAction`, `ExtractSummaryResult`, and `SummarySentence`. To access this beta feature, install the `5.2.0b4` version of the client library.
 - `SingleCategoryClassifyResult` and `MultiCategoryClassifyResult` models have been merged into one model: `ClassifyDocumentResult`.
+- Removed the `FHIR` feature and related keyword argument and property: `fhir_version` and `fhir_bundle`. To access this beta feature, install the `5.2.0b4` version of the client library.
 
 ### Bugs Fixed
 
