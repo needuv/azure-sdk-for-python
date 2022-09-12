@@ -20,10 +20,13 @@ def code_asset_path(tmp_path: Path) -> str:
 
 
 @pytest.mark.e2etest
-@pytest.mark.usefixtures("recorded_test", "mock_code_hash")
+@pytest.mark.usefixtures(
+    "recorded_test"
+    # "mock_code_hash"
+)
 class TestCode(AzureRecordedTestCase):
     def test_create_and_get(self, client: MLClient, code_asset_path: str, randstr: Callable[[], str]) -> None:
-        name = randstr("name")
+        name = randstr()
         code_entity = Code(name=name, version="2", path=code_asset_path)
         assert str(code_entity.path) == str(Path(code_asset_path))
 
@@ -46,7 +49,7 @@ class TestCode(AzureRecordedTestCase):
         randstr: Callable[[str], str],
         code_asset_path: str,
     ) -> None:
-        name = randstr("name")
+        name = randstr()
         code_entity = Code(name=name, version="1", path=code_asset_path)
 
         _ = client._code.create_or_update(code_entity)
@@ -62,7 +65,7 @@ class TestCode(AzureRecordedTestCase):
         code_asset_path: str,
         randstr: Callable[[str], str],
     ) -> None:
-        name = randstr("name")
+        name = randstr()
         code_entity = Code(name=name, version="2", path=code_asset_path)
         assert str(code_entity.path) == str(Path(code_asset_path))
         code_asset_1 = registry_client._code.create_or_update(code_entity)

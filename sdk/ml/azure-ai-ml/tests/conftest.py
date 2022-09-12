@@ -43,7 +43,7 @@ E2E_TEST_LOGGING_ENABLED = "E2E_TEST_LOGGING_ENABLED"
 test_folder = Path(os.path.abspath(__file__)).parent.absolute()
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def start_proxy(test_proxy):
     return
 
@@ -55,13 +55,13 @@ def fake_datastore_key() -> str:
     return str(b64_key, "ascii")
 
 
-@pytest.fixture(autouse=True)
+"""@pytest.fixture(autouse=True)
 def add_sanitizers(test_proxy, fake_datastore_key):
     add_remove_header_sanitizer(headers="x-azureml-token")
     set_custom_default_matcher(excluded_headers="x-ms-meta-name,x-ms-meta-version")
     add_body_key_sanitizer(json_path="$.key", value=fake_datastore_key)
     add_body_key_sanitizer(json_path="$....key", value=fake_datastore_key)
-    add_general_string_sanitizer(value="", target=f"&tid={os.environ.get('ML_TENANT_ID')}")
+    add_general_string_sanitizer(value="", target=f"&tid={os.environ.get('ML_TENANT_ID')}")"""
 
 
 def pytest_addoption(parser):
@@ -146,14 +146,19 @@ def mock_aml_services_2022_05_01(mocker: MockFixture) -> Mock:
 
 
 @pytest.fixture
-def randstr(variable_recorder: VariableRecorder) -> Callable[[str], str]:
-    """return a random string, e.g. test-xxx"""
+def randstr() -> Callable[[], str]:
+    return lambda: f"test_{str(random.randint(1, 1000000000000))}"
 
-    def generate_random_string(variable_name: str):
-        random_string = f"test_{str(random.randint(1, 1000000000000))}"
-        return variable_recorder.get_or_record(variable_name, random_string)
 
-    return generate_random_string
+# @pytest.fixture
+# def randstr(variable_recorder: VariableRecorder) -> Callable[[str], str]:
+#     """return a random string, e.g. test-xxx"""
+
+#     def generate_random_string(variable_name: str):
+#         random_string = f"test_{str(random.randint(1, 1000000000000))}"
+#         return variable_recorder.get_or_record(variable_name, random_string)
+
+#     return generate_random_string
 
 
 @pytest.fixture
