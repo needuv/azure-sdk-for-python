@@ -4,12 +4,19 @@
 
 from marshmallow import fields
 
-from azure.ai.ml._schema.core.fields import DumpableStringField, NestedField, StringTransformedEnum, UnionField
+from azure.ai.ml._schema.core.fields import (
+    DumpableStringField,
+    NestedField,
+    StringTransformedEnum,
+    UnionField,
+)
 from azure.ai.ml._schema.core.resource import ResourceSchema
 from azure.ai.ml._utils.utils import snake_to_pascal
 from azure.ai.ml.constants._common import PublicNetworkAccess
 from azure.ai.ml.constants._registry import AcrAccountSku
-from azure.ai.ml.entities._registry.registry_support_classes import SystemCreatedAcrAccount
+from azure.ai.ml.entities._registry.registry_support_classes import (
+    SystemCreatedAcrAccount,
+)
 from azure.ai.ml._utils._experimental import experimental
 
 from azure.ai.ml._schema.workspace.identity import IdentitySchema
@@ -38,7 +45,10 @@ class RegistrySchema(ResourceSchema):
     # definition, which has a per-region list of acr accounts.
     # Per-region acr account configuration is NOT possible through yaml configs for now.
     container_registry = UnionField(
-        [DumpableStringField(validate=acr_format_validator), NestedField(SystemCreatedAcrAccountSchema)],
+        [
+            DumpableStringField(validate=acr_format_validator),
+            NestedField(SystemCreatedAcrAccountSchema),
+        ],
         required=False,
         is_strict=True,
         load_default=SystemCreatedAcrAccount(acr_account_sku=AcrAccountSku.PREMIUM),

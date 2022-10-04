@@ -1,11 +1,19 @@
 import pytest
 
-from azure.ai.ml._restclient.v2022_10_01_preview.models import AcrDetails, RegistryProperties, StorageAccountDetails, UserCreatedAcrAccount, UserCreatedStorageAccount
+from azure.ai.ml._restclient.v2022_10_01_preview.models import (
+    AcrDetails,
+    RegistryProperties,
+    StorageAccountDetails,
+    UserCreatedAcrAccount,
+    UserCreatedStorageAccount,
+)
 from azure.ai.ml._restclient.v2022_10_01_preview.models import Registry as RestRegistry
 from azure.ai.ml._restclient.v2022_10_01_preview.models import RegistryRegionArmDetails as RestRegistryRegionArmDetails
 from azure.ai.ml._restclient.v2022_10_01_preview.models import StorageAccountType as RestStorageAccountType
 from azure.ai.ml._restclient.v2022_10_01_preview.models import SystemCreatedAcrAccount as RestSystemCreatedAcrAccount
-from azure.ai.ml._restclient.v2022_10_01_preview.models import SystemCreatedStorageAccount as RestSystemCreatedStorageAccount
+from azure.ai.ml._restclient.v2022_10_01_preview.models import (
+    SystemCreatedStorageAccount as RestSystemCreatedStorageAccount,
+)
 from azure.ai.ml._restclient.v2022_10_01_preview.models import ArmResourceId as RestArmResourceId
 from azure.ai.ml.constants._registry import StorageAccountType
 
@@ -18,7 +26,7 @@ exterior_tags = {"test": "registry"}
 name = "registry name"
 # id = "registry id"
 description = "registry description"
-# There are two places in a registry where tags can live. We only care about 
+# There are two places in a registry where tags can live. We only care about
 # tags set at the top level, AKA the 'exterior_tags' defined above/
 # These interior tags only exists to show that the value technically
 # exists due to swagger-side inheritance in the autotest.
@@ -71,7 +79,11 @@ class TestRegistryEntity:
                     RestRegistryRegionArmDetails(
                         location=loc_2,
                         acr_details=[
-                            AcrDetails(user_created_acr_account=UserCreatedAcrAccount(arm_resource_id=RestArmResourceId(resource_id=acr_id_1))),
+                            AcrDetails(
+                                user_created_acr_account=UserCreatedAcrAccount(
+                                    arm_resource_id=RestArmResourceId(resource_id=acr_id_1)
+                                )
+                            ),
                             AcrDetails(
                                 system_created_acr_account=RestSystemCreatedAcrAccount(
                                     acr_account_sku=sku, arm_resource_id=RestArmResourceId(resource_id=acr_id_2)
@@ -79,7 +91,11 @@ class TestRegistryEntity:
                             ),
                         ],
                         storage_account_details=[
-                            StorageAccountDetails(user_created_storage_account=UserCreatedStorageAccount(arm_resource_id=RestArmResourceId(resource_id=storage_id_1))),
+                            StorageAccountDetails(
+                                user_created_storage_account=UserCreatedStorageAccount(
+                                    arm_resource_id=RestArmResourceId(resource_id=storage_id_1)
+                                )
+                            ),
                             StorageAccountDetails(
                                 system_created_storage_account=RestSystemCreatedStorageAccount(
                                     arm_resource_id=RestArmResourceId(resource_id=storage_id_2),
@@ -180,7 +196,11 @@ class TestRegistryEntity:
 
     def test_system_storage_serialization(self):
         user_storage = "some user storage id"
-        system_storage = SystemCreatedStorageAccount(storage_account_hns=True, storage_account_type=StorageAccountType.PREMIUM_LRS, arm_resource_id="some managed storage id")
+        system_storage = SystemCreatedStorageAccount(
+            storage_account_hns=True,
+            storage_account_type=StorageAccountType.PREMIUM_LRS,
+            arm_resource_id="some managed storage id",
+        )
 
         rest_user_storage = SystemCreatedStorageAccount._to_rest_object(user_storage)
         rest_system_storage = SystemCreatedStorageAccount._to_rest_object(system_storage)
@@ -191,7 +211,9 @@ class TestRegistryEntity:
         assert rest_system_storage.system_created_storage_account.arm_resource_id == None
 
         # ... but still test that ID is set in the other direction
-        rest_system_storage.system_created_storage_account.arm_resource_id = RestArmResourceId(resource_id="another storage id")
+        rest_system_storage.system_created_storage_account.arm_resource_id = RestArmResourceId(
+            resource_id="another storage id"
+        )
         new_user_storage = SystemCreatedStorageAccount._from_rest_object(rest_user_storage)
         new_system_storage = SystemCreatedStorageAccount._from_rest_object(rest_system_storage)
 
@@ -201,14 +223,23 @@ class TestRegistryEntity:
         assert new_system_storage.storage_account_type == StorageAccountType.PREMIUM_LRS
 
     def test_system_region_details_serialization(self):
-        region_detail = RegistryRegionDetails(acr_config=[SystemCreatedAcrAccount(acr_account_sku="Premium")],
+        region_detail = RegistryRegionDetails(
+            acr_config=[SystemCreatedAcrAccount(acr_account_sku="Premium")],
             location="USEast2",
-            storage_config=[SystemCreatedStorageAccount(storage_account_hns=False, storage_account_type=StorageAccountType.PREMIUM_LRS)])
+            storage_config=[
+                SystemCreatedStorageAccount(
+                    storage_account_hns=False, storage_account_type=StorageAccountType.PREMIUM_LRS
+                )
+            ],
+        )
         rest_region_detail = region_detail._to_rest_object()
 
         assert rest_region_detail.acr_details[0].system_created_acr_account.acr_account_sku == "Premium"
         assert rest_region_detail.location == "USEast2"
-        assert rest_region_detail.storage_account_details[0].system_created_storage_account.storage_account_hns_enabled == False
+        assert (
+            rest_region_detail.storage_account_details[0].system_created_storage_account.storage_account_hns_enabled
+            == False
+        )
 
         new_region_detail = RegistryRegionDetails._from_rest_object(rest_region_detail)
 

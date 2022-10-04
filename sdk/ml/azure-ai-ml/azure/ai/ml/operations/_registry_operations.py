@@ -6,14 +6,11 @@
 
 from typing import Dict, Iterable
 
-from azure.ai.ml._restclient.v2022_10_01_preview import \
-    AzureMachineLearningWorkspaces as ServiceClient102022
-from azure.ai.ml._scope_dependent_operations import (OperationsContainer,
-                                                     OperationScope)
+from azure.ai.ml._restclient.v2022_10_01_preview import AzureMachineLearningWorkspaces as ServiceClient102022
+from azure.ai.ml._scope_dependent_operations import OperationsContainer, OperationScope
 from azure.ai.ml._utils._logger_utils import OpsLogger
 from azure.ai.ml.entities import Registry
-from azure.ai.ml.exceptions import (ErrorCategory, ErrorTarget,
-                                    ValidationException)
+from azure.ai.ml.exceptions import ErrorCategory, ErrorTarget, ValidationException
 from azure.core.credentials import TokenCredential
 from azure.core.polling import LROPoller
 
@@ -23,6 +20,7 @@ from ..constants._common import LROConfigurations
 
 ops_logger = OpsLogger(__name__)
 module_logger = ops_logger.module_logger
+
 
 @experimental
 class RegistryOperations:
@@ -51,7 +49,7 @@ class RegistryOperations:
         self.containerRegistry = "none"
         self._init_kwargs = kwargs
 
-    #@ monitor_with_activity(logger, "Registry.List", ActivityType.PUBLICAPI)
+    # @ monitor_with_activity(logger, "Registry.List", ActivityType.PUBLICAPI)
     def list(self) -> Iterable[Registry]:
         """List all registries that the user has access to in the current
         resource group.
@@ -60,8 +58,10 @@ class RegistryOperations:
         :rtype: ~azure.core.paging.ItemPaged[Registry]
         """
 
-        return self._operation.list(cls=lambda objs: [Registry._from_rest_object(obj) for obj in objs], \
-            resource_group_name=self._resource_group_name)
+        return self._operation.list(
+            cls=lambda objs: [Registry._from_rest_object(obj) for obj in objs],
+            resource_group_name=self._resource_group_name,
+        )
 
     # @monitor_with_activity(logger, "Registry.Get", ActivityType.PUBLICAPI)
     def get(self, name: str = None) -> Registry:
@@ -124,8 +124,7 @@ class RegistryOperations:
             registry_name=registry.name,
             body=registry_data,
             polling=self._get_polling(registry.name),
-            cls=lambda response, deserialized, headers: Registry._from_rest_object(
-                deserialized),
+            cls=lambda response, deserialized, headers: Registry._from_rest_object(deserialized),
         )
 
         return poller

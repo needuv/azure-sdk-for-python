@@ -9,7 +9,9 @@ from marshmallow import ValidationError, fields, post_load, pre_dump
 from azure.ai.ml._schema.core.fields import DumpableStringField, NestedField, UnionField
 from azure.ai.ml._schema.core.schema_meta import PatchedSchemaMeta
 from azure.ai.ml.constants._registry import StorageAccountType
-from azure.ai.ml.entities._registry.registry_support_classes import SystemCreatedStorageAccount
+from azure.ai.ml.entities._registry.registry_support_classes import (
+    SystemCreatedStorageAccount,
+)
 
 from azure.ai.ml._utils._experimental import experimental
 from .system_created_storage_account import SystemCreatedStorageAccountSchema
@@ -26,13 +28,13 @@ class RegistryRegionDetailsSchema(metaclass=PatchedSchemaMeta):
     # top-level value called 'container_registry'.
     # We don't even want to show the per-region acr accounts when displaying a
     # registry to the user, so this isn't even left as a dump-only field.
-    '''acr_config = fields.List(
+    """acr_config = fields.List(
         UnionField(
             [DumpableStringField(validate=acr_format_validator), NestedField(SystemCreatedAcrAccountSchema)],
             dump_only=True,
             is_strict=True,
         )
-    )'''
+    )"""
     location = fields.Str()
     storage_config = UnionField(
         [
@@ -41,7 +43,8 @@ class RegistryRegionDetailsSchema(metaclass=PatchedSchemaMeta):
         ],
         is_strict=True,
         load_default=SystemCreatedStorageAccount(
-            storage_account_hns=False, storage_account_type=StorageAccountType.STANDARD_LRS
+            storage_account_hns=False,
+            storage_account_type=StorageAccountType.STANDARD_LRS,
         ),
     )
 

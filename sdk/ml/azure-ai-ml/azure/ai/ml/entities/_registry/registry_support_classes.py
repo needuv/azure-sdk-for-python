@@ -13,7 +13,8 @@ from azure.ai.ml._restclient.v2022_10_01_preview.models import (
     SystemCreatedAcrAccount as RestSystemCreatedAcrAccount,
     SystemCreatedStorageAccount as RestSystemCreatedStorageAccount,
     UserCreatedAcrAccount as RestUserCreatedAcrAccount,
-    UserCreatedStorageAccount as RestUserCreatedStorageAccount)
+    UserCreatedStorageAccount as RestUserCreatedStorageAccount,
+)
 from azure.ai.ml._utils._experimental import experimental
 from azure.ai.ml.constants._registry import StorageAccountType
 
@@ -62,8 +63,7 @@ class SystemCreatedAcrAccount:
             )
         else:
             return RestAcrDetails(
-                user_created_acr_account=RestUserCreatedAcrAccount(
-                    arm_resource_id=RestArmResourceId(resource_id=acr))
+                user_created_acr_account=RestUserCreatedAcrAccount(arm_resource_id=RestArmResourceId(resource_id=acr))
             )
 
     @classmethod
@@ -193,12 +193,12 @@ class RegistryRegionDetails:
             return None
         converted_acr_details = []
         if rest_obj.acr_details:
-            converted_acr_details = [SystemCreatedAcrAccount._from_rest_object(
-                acr) for acr in rest_obj.acr_details]
+            converted_acr_details = [SystemCreatedAcrAccount._from_rest_object(acr) for acr in rest_obj.acr_details]
         storages = []
         if rest_obj.storage_account_details:
-            storages = [SystemCreatedStorageAccount._from_rest_object(
-                storages) for storages in rest_obj.storage_account_details]
+            storages = [
+                SystemCreatedStorageAccount._from_rest_object(storages) for storages in rest_obj.storage_account_details
+            ]
         return RegistryRegionDetails(
             acr_config=converted_acr_details, location=rest_obj.location, storage_config=storages
         )
@@ -206,12 +206,10 @@ class RegistryRegionDetails:
     def _to_rest_object(self) -> RestRegistryRegionArmDetails:
         converted_acr_details = []
         if self.acr_config:
-            converted_acr_details = [SystemCreatedAcrAccount._to_rest_object(
-                acr) for acr in self.acr_config]
+            converted_acr_details = [SystemCreatedAcrAccount._to_rest_object(acr) for acr in self.acr_config]
         storages = []
         if self.storage_config:
-            storages = [SystemCreatedStorageAccount._to_rest_object(
-                storage) for storage in self.storage_config]
+            storages = [SystemCreatedStorageAccount._to_rest_object(storage) for storage in self.storage_config]
         return RestRegistryRegionArmDetails(
             acr_details=converted_acr_details,
             location=self.location,

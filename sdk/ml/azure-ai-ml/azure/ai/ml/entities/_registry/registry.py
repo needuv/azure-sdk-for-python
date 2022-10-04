@@ -27,6 +27,7 @@ from .registry_support_classes import RegistryRegionDetails, SystemCreatedStorag
 CONTAINER_REGISTRY = "container_registry"
 REPLICATION_LOCATIONS = "replication_locations"
 
+
 @experimental
 class Registry(Resource):
     def __init__(
@@ -89,7 +90,7 @@ class Registry(Resource):
     def dump(
         self,
         dest: Union[str, PathLike, IO[AnyStr]],
-        **kwargs, # pylint: disable=unused-argument
+        **kwargs,  # pylint: disable=unused-argument
     ) -> None:
         """Dump the registry spec into a file in yaml format.
 
@@ -156,7 +157,8 @@ class Registry(Resource):
         replication_locations = []
         if real_registry.region_details:
             replication_locations = [
-                RegistryRegionDetails._from_rest_object(details) for details in real_registry.region_details # pylint: disable=protected-access
+                RegistryRegionDetails._from_rest_object(details)
+                for details in real_registry.region_details  # pylint: disable=protected-access
             ]
         identity = None
         if rest_obj.identity and isinstance(rest_obj.identity, RestManagedServiceIdentity):
@@ -185,7 +187,7 @@ class Registry(Resource):
     @classmethod
     def _convert_yaml_dict_to_entity_input(
         cls,
-        input: Dict, # pylint: disable=redefined-builtin
+        input: Dict,  # pylint: disable=redefined-builtin
     ):
         # pop container_registry value.
         global_acr_exists = False
@@ -198,10 +200,10 @@ class Registry(Resource):
                 if not hasattr(region_detail, "acr_details") or len(region_detail.acr_details) == 0:
                     region_detail.acr_config = [acr_input]
             # Convert single, non-list managed storage into a 1-element list.
-            if hasattr(region_detail, "storage_config") and isinstance(region_detail.storage_config, \
-                                                                        SystemCreatedStorageAccount):
+            if hasattr(region_detail, "storage_config") and isinstance(
+                region_detail.storage_config, SystemCreatedStorageAccount
+            ):
                 region_detail.storage_config = [region_detail.storage_config]
-
 
     def _to_rest_object(self) -> RestRegistry:
         """Build current parameterized schedule instance to a registry object before submission.
@@ -219,7 +221,7 @@ class Registry(Resource):
             tags=self.tags,
             description=self.description,
             properties=RegistryProperties(
-                #tags=self.tags, interior tags exist due to swagger inheritance
+                # tags=self.tags, interior tags exist due to swagger inheritance
                 # issues, don't actually use them.
                 public_network_access=self.public_network_access,
                 discovery_url=self.discovery_url,
